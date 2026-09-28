@@ -22,11 +22,9 @@
 
     <section class="workspace">
 
-
         <!-- =========================
-             左侧：液晶屏
+             左侧：LCD设备预览
         ========================== -->
-
         <section class="left-panel">
 
             <div class="prototype-area">
@@ -63,7 +61,7 @@
                                 alt="蓝牙">
 
 
-                            <!-- 未定义 icon -->
+                            <!-- 备用图标 -->
                             <span
                                 id="extraIcon"
                                 class="extra-icon hidden">
@@ -106,7 +104,7 @@
                         </div>
 
 
-                        <!-- Mark -->
+                        <!-- 标记 -->
                         <div
                             id="markIcon"
                             class="mark-icon hidden">
@@ -114,7 +112,7 @@
                         </div>
 
 
-                        <!-- OTA -->
+                        <!-- OTA升级 -->
                         <div
                             id="updateIcon"
                             class="update-icon hidden">
@@ -140,19 +138,21 @@
                         </div>
 
 
-                        <!-- LCD 文字 -->
+                        <!-- LCD主文字 -->
                         <div
                             id="line1"
                             class="line-main">
                         </div>
 
+
+                        <!-- LCD副文字 -->
                         <div
                             id="line2"
                             class="line-sub">
                         </div>
 
 
-                        <!-- 进度 -->
+                        <!-- 进度区域 -->
                         <div
                             id="progressArea"
                             class="progress-area hidden">
@@ -193,17 +193,17 @@
         </section>
 
 
-
         <!-- =========================
-             右侧：状态按钮
+             右侧：状态控制
         ========================== -->
-
         <section class="right-panel">
 
             <section class="controls">
 
 
-                <!-- 设备状态 -->
+                <!-- =========================
+                     设备状态
+                ========================== -->
                 <div class="control-group">
 
                     <h2>设备状态</h2>
@@ -226,7 +226,6 @@
                             连接失败
                         </button>
 
-
                         <button data-state="shutdown">
                             关机
                         </button>
@@ -236,7 +235,9 @@
                 </div>
 
 
-                <!-- 录音状态 -->
+                <!-- =========================
+                     录音状态
+                ========================== -->
                 <div class="control-group">
 
                     <h2>录音状态</h2>
@@ -276,16 +277,14 @@
                 </div>
 
 
-                <!-- 电量 -->
+                <!-- =========================
+                     电量显示
+                ========================== -->
                 <div class="control-group">
 
                     <h2>电量显示</h2>
 
                     <div class="button-grid">
-
-                        <button data-state="batteryNormal">
-                            正常电量
-                        </button>
 
                         <button data-state="batteryLow">
                             低电量
@@ -308,7 +307,9 @@
                 </div>
 
 
-                <!-- 蓝牙 -->
+                <!-- =========================
+                     蓝牙连接
+                ========================== -->
                 <div class="control-group">
 
                     <h2>蓝牙连接</h2>
@@ -336,7 +337,9 @@
                 </div>
 
 
-                <!-- 数据传输 -->
+                <!-- =========================
+                     数据传输状态
+                ========================== -->
                 <div class="control-group">
 
                     <h2>数据传输状态</h2>
@@ -345,10 +348,6 @@
 
                         <button data-state="bleTransfer">
                             蓝牙传输中
-                        </button>
-
-                        <button data-state="bleTransferDone">
-                            蓝牙传输完成
                         </button>
 
                         <button data-state="wifiWaiting">
@@ -363,25 +362,19 @@
                             Wi-Fi传输中
                         </button>
 
-                        <button data-state="wifiTransferDone">
-                            Wi-Fi传输结束
-                        </button>
-
                     </div>
 
                 </div>
 
 
-                <!-- 存储 -->
+                <!-- =========================
+                     存储状态
+                ========================== -->
                 <div class="control-group">
 
                     <h2>存储状态</h2>
 
                     <div class="button-grid">
-
-                        <button data-state="storageNormal">
-                            剩余容量
-                        </button>
 
                         <button data-state="storageLow">
                             存储不足
@@ -396,15 +389,17 @@
                 </div>
 
 
-                <!-- 异常 -->
+                <!-- =========================
+                     系统状态
+                ========================== -->
                 <div class="control-group">
 
-                    <h2>异常提醒</h2>
+                    <h2>系统状态</h2>
 
                     <div class="button-grid">
 
                         <button data-state="systemError">
-                            系统异常
+                            设备异常
                         </button>
 
                     </div>
@@ -412,27 +407,21 @@
                 </div>
 
 
-                <!-- OTA -->
+                <!-- =========================
+                     OTA升级
+                ========================== -->
                 <div class="control-group">
 
-                    <h2>其他 / OTA</h2>
+                    <h2>OTA升级</h2>
 
                     <div class="button-grid">
 
-                        <button data-state="welcome">
-                            欢迎语
-                        </button>
-
                         <button data-state="updating">
-                            固件升级中
-                        </button>
-
-                        <button data-state="updateDone">
-                            固件升级完成
+                            升级中
                         </button>
 
                         <button data-state="updateFail">
-                            固件升级失败
+                            升级失败
                         </button>
 
                     </div>
@@ -440,7 +429,9 @@
                 </div>
 
 
-                <!-- LED -->
+                <!-- =========================
+                     LED状态
+                ========================== -->
                 <div class="control-group">
 
                     <h2>LED状态</h2>
@@ -448,24 +439,13 @@
                     <div class="button-grid">
 
                         <button data-state="ledRecording">
-                            录音中红灯
-                        </button>
-
-                        <button data-state="ledOff">
-                            结束录音
-                        </button>
-
-                        <button data-state="ledPause">
-                            暂停录音
-                        </button>
-
-                        <button data-state="ledCharging">
-                            充电
+                            录音红灯
                         </button>
 
                     </div>
 
                 </div>
+
 
             </section>
 
@@ -474,6 +454,7 @@
     </section>
 
 </main>
+
 
 <script src="app.js"></script>
 
