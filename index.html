@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI录音卡 LCD 状态原型</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<main class="page">
+
+    <header class="page-header">
+        <h1>AI录音卡 LCD 状态原型</h1>
+        <p>开发状态模拟器</p>
+    </header>
+
+
+    <section class="workspace">
+
+
+        <!-- =========================
+             左侧：液晶屏
+        ========================== -->
+
+        <section class="left-panel">
+
+            <div class="prototype-area">
+
+                <div class="device">
+
+                    <div class="lcd">
+
+                        <!-- 顶部状态栏 -->
+                        <div id="statusBar" class="status-bar">
+
+                            <!-- 电池 -->
+                            <div id="batteryStatus" class="battery-status">
+
+                                <div class="battery-shell">
+                                    <div
+                                        id="batteryFill"
+                                        class="battery-fill">
+                                    </div>
+                                </div>
+
+                                <span id="batteryText">
+                                    85%
+                                </span>
+
+                            </div>
+
+
+                            <!-- 蓝牙 -->
+                            <img
+                                id="bluetoothIcon"
+                                class="bluetooth-icon"
+                                src="./bluetooth.svg"
+                                alt="蓝牙">
+
+
+                            <!-- 未定义 icon -->
+                            <span
+                                id="extraIcon"
+                                class="extra-icon hidden">
+                                ?
+                            </span>
+
+                        </div>
+
+
+                        <!-- 二维码 -->
+                        <div
+                            id="qrCode"
+                            class="qr-code hidden">
+
+                            <div class="qr-inner"></div>
+
+                        </div>
+
+
+                        <!-- 加载 -->
+                        <div
+                            id="loadingIcon"
+                            class="loading-icon hidden">
+                        </div>
+
+
+                        <!-- 成功 -->
+                        <div
+                            id="successIcon"
+                            class="success-icon hidden">
+                            ✓
+                        </div>
+
+
+                        <!-- 失败 -->
+                        <div
+                            id="failIcon"
+                            class="fail-icon hidden">
+                            ×
+                        </div>
+
+
+                        <!-- Mark -->
+                        <div
+                            id="markIcon"
+                            class="mark-icon hidden">
+                            ★
+                        </div>
+
+
+                        <!-- OTA -->
+                        <div
+                            id="updateIcon"
+                            class="update-icon hidden">
+                            ↑
+                        </div>
+
+
+                        <!-- 录音波形 -->
+                        <div
+                            id="wave"
+                            class="wave hidden">
+
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+
+                        </div>
+
+
+                        <!-- LCD 文字 -->
+                        <div
+                            id="line1"
+                            class="line-main">
+                        </div>
+
+                        <div
+                            id="line2"
+                            class="line-sub">
+                        </div>
+
+
+                        <!-- 进度 -->
+                        <div
+                            id="progressArea"
+                            class="progress-area hidden">
+
+                            <div
+                                id="progressText"
+                                class="progress-text">
+                            </div>
+
+                            <div class="progress-track">
+
+                                <div
+                                    id="progressFill"
+                                    class="progress-fill">
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- LED -->
+                    <div class="led-area">
+
+                        <div
+                            id="led"
+                            class="led">
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================
+             右侧：状态按钮
+        ========================== -->
+
+        <section class="right-panel">
+
+            <section class="controls">
+
+
+                <!-- 设备状态 -->
+                <div class="control-group">
+
+                    <h2>设备状态</h2>
+
+                    <div class="button-grid">
+
+                        <button data-state="firstBoot">
+                            首次开机
+                        </button>
+
+                        <button data-state="deviceConnecting">
+                            连接中
+                        </button>
+
+                        <button data-state="deviceConnected">
+                            连接成功
+                        </button>
+
+                        <button data-state="deviceConnectFail">
+                            连接失败
+                        </button>
+
+
+                        <button data-state="shutdown">
+                            关机
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- 录音状态 -->
+                <div class="control-group">
+
+                    <h2>录音状态</h2>
+
+                    <div class="button-grid">
+
+                        <button data-state="idle">
+                            待机
+                        </button>
+
+                        <button data-state="recordStart">
+                            录音启动
+                        </button>
+
+                        <button data-state="recording">
+                            录音中
+                        </button>
+
+                        <button data-state="recordPause">
+                            暂停录音
+                        </button>
+
+                        <button data-state="recordEnd">
+                            录音结束
+                        </button>
+
+                        <button data-state="mark">
+                            标记
+                        </button>
+
+                        <button data-state="recordFail">
+                            录音失败
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- 电量 -->
+                <div class="control-group">
+
+                    <h2>电量显示</h2>
+
+                    <div class="button-grid">
+
+                        <button data-state="batteryNormal">
+                            正常电量
+                        </button>
+
+                        <button data-state="batteryLow">
+                            低电量
+                        </button>
+
+                        <button data-state="batteryCritical">
+                            极低电量
+                        </button>
+
+                        <button data-state="charging">
+                            充电中
+                        </button>
+
+                        <button data-state="charged">
+                            充满电
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- 蓝牙 -->
+                <div class="control-group">
+
+                    <h2>蓝牙连接</h2>
+
+                    <div class="button-grid">
+
+                        <button data-state="btWaiting">
+                            待连接
+                        </button>
+
+                        <button data-state="btConnecting">
+                            连接中
+                        </button>
+
+                        <button data-state="btConnected">
+                            已连接
+                        </button>
+
+                        <button data-state="btDisconnected">
+                            断开连接
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- 数据传输 -->
+                <div class="control-group">
+
+                    <h2>数据传输状态</h2>
+
+                    <div class="button-grid">
+
+                        <button data-state="bleTransfer">
+                            蓝牙传输中
+                        </button>
+
+                        <button data-state="bleTransferDone">
+                            蓝牙传输完成
+                        </button>
+
+                        <button data-state="wifiWaiting">
+                            Wi-Fi待连接
+                        </button>
+
+                        <button data-state="wifiConnected">
+                            Wi-Fi已连接
+                        </button>
+
+                        <button data-state="wifiTransfer">
+                            Wi-Fi传输中
+                        </button>
+
+                        <button data-state="wifiTransferDone">
+                            Wi-Fi传输结束
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- 存储 -->
+                <div class="control-group">
+
+                    <h2>存储状态</h2>
+
+                    <div class="button-grid">
+
+                        <button data-state="storageNormal">
+                            剩余容量
+                        </button>
+
+                        <button data-state="storageLow">
+                            存储不足
+                        </button>
+
+                        <button data-state="storageFull">
+                            存储满
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- 异常 -->
+                <div class="control-group">
+
+                    <h2>异常提醒</h2>
+
+                    <div class="button-grid">
+
+                        <button data-state="systemError">
+                            系统异常
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- OTA -->
+                <div class="control-group">
+
+                    <h2>其他 / OTA</h2>
+
+                    <div class="button-grid">
+
+                        <button data-state="welcome">
+                            欢迎语
+                        </button>
+
+                        <button data-state="updating">
+                            固件升级中
+                        </button>
+
+                        <button data-state="updateDone">
+                            固件升级完成
+                        </button>
+
+                        <button data-state="updateFail">
+                            固件升级失败
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- LED -->
+                <div class="control-group">
+
+                    <h2>LED状态</h2>
+
+                    <div class="button-grid">
+
+                        <button data-state="ledRecording">
+                            录音中红灯
+                        </button>
+
+                        <button data-state="ledOff">
+                            结束录音
+                        </button>
+
+                        <button data-state="ledPause">
+                            暂停录音
+                        </button>
+
+                        <button data-state="ledCharging">
+                            充电
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </section>
+
+    </section>
+
+</main>
+
+<script src="app.js"></script>
+
+</body>
+
+</html>
