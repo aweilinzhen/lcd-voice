@@ -3779,34 +3779,3 @@ button:focus-visible {
     min-width: 0;
 }
 
-
-/* =========================================================
-   手机适配
-========================================================= */
-
-@media (max-width: 620px) {
-
-    .prototype-note {
-        width: 335px;
-        max-width: 100%;
-
-        margin-top: 16px;
-        padding: 0 2px;
-
-        gap: 7px;
-
-        font-size: 10px;
-        line-height: 17px;
-    }
-
-
-    .prototype-note-icon {
-        width: 14px;
-        height: 14px;
-
-        flex-basis: 14px;
-
-        font-size: 8px;
-    }
-
-}
