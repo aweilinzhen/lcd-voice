@@ -1,1957 +1,3351 @@
 * {
+
     box-sizing: border-box;
+
 }
+
+
 
 :root {
+
     --page-bg: #f4f6f9;
 
+
+
     --white: #ffffff;
+
     --gray: #9ca2a7;
 
+
+
     --green: #36e38a;
+
     --blue: #3399ff;
+
     --orange: #ff9d32;
+
     --red: #ff3636;
+
     --yellow: #ffcc00;
+
     --cyan: #25dddd;
+
 }
+
+
 
 html {
+
     min-height: 100%;
+
 }
 
+
+
 body {
+
     margin: 0;
+
     min-height: 100vh;
 
+
+
     background:
+
         radial-gradient(
+
             circle at 22% 8%,
+
             rgba(255, 255, 255, 0.95),
+
             transparent 34%
+
         ),
+
         linear-gradient(
+
             180deg,
+
             #f7f8fa 0%,
+
             #f1f4f8 100%
+
         );
+
+
 
     color: #181a1d;
 
+
+
     font-family:
+
         -apple-system,
+
         BlinkMacSystemFont,
+
         "Segoe UI",
+
         Arial,
+
         "Microsoft YaHei",
+
         sans-serif;
+
 }
 
 
+
+
+
 /* =========================================================
+
    页面
-========================================================= */
+
+\========================================================= */
+
+
 
 .page {
+
     width: min(1360px, 100%);
+
     margin: 0 auto;
 
+
+
     padding:
+
         22px
+
         28px
+
         45px;
+
 }
 
 
+
+
+
 /* =========================================================
+
    页面标题
-========================================================= */
+
+\========================================================= */
+
+
 
 .page-header {
+
     position: sticky;
+
     top: 0;
+
+
 
     z-index: 1000;
 
+
+
     margin-bottom: 22px;
 
+
+
     padding:
+
         12px
+
         0
+
         13px;
+
+
 
     text-align: center;
 
+
+
     background:
+
         rgba(247, 248, 250, 0.94);
 
+
+
     backdrop-filter: blur(12px);
+
     -webkit-backdrop-filter: blur(12px);
+
 }
 
+
+
 .page-header h1 {
+
     margin: 0;
+
+
 
     color: #181a1d;
 
+
+
     font-size: 22px;
+
     font-weight: 750;
+
     line-height: 30px;
 
+
+
     letter-spacing: -0.2px;
+
 }
 
+
+
 .page-header p {
+
     display: none;
+
 }
+
+
+
 
 
 /* =========================================================
+
    左右布局
-========================================================= */
+
+\========================================================= */
+
+
 
 .workspace {
+
     display: grid;
 
+
+
     grid-template-columns:
+
         410px
+
         minmax(0, 1fr);
+
+
 
     align-items: start;
 
+
+
     gap: 28px;
+
 }
 
 
+
+
+
 /* =========================================================
+
    左侧区域
-========================================================= */
+
+\========================================================= */
+
+
 
 .left-panel {
+
     width: 410px;
 
+
+
     position: sticky;
+
     top: 78px;
+
+
 
     z-index: 10;
 
+
+
     padding-top: 12px;
+
 }
 
+
+
 .prototype-area {
+
     display: flex;
+
     justify-content: center;
+
 }
+
+
+
 
 
 /* =========================================================
+
    设备机身
-========================================================= */
+
+\========================================================= */
+
+
 
 .device {
+
     position: relative;
 
+
+
     width: 385px;
+
     height: 138px;
 
+
+
     padding:
+
         17px
+
         20px;
+
+
 
     display: flex;
 
+
+
     align-items: center;
+
     justify-content: center;
+
+
 
     gap: 15px;
 
+
+
     overflow: hidden;
 
+
+
     background:
+
         linear-gradient(
+
             145deg,
+
             #292d31 0%,
+
             #202327 43%,
+
             #181b1e 100%
+
         );
 
+
+
     border:
+
         1px solid
+
         rgba(255, 255, 255, 0.05);
+
+
 
     border-radius: 25px;
 
+
+
     box-shadow:
+
         inset 0 1px 0 rgba(255, 255, 255, 0.075),
+
         inset 0 -1px 0 rgba(0, 0, 0, 0.42),
+
         0 17px 31px rgba(35, 43, 54, 0.15),
+
         0 4px 9px rgba(0, 0, 0, 0.07);
+
 }
+
+
+
 
 
 /* 顶部高光 */
 
+
+
 .device-highlight {
+
     position: absolute;
 
+
+
     top: 0;
+
     left: 30px;
+
     right: 30px;
+
+
 
     height: 1px;
 
+
+
     opacity: 0.75;
 
+
+
     background:
+
         linear-gradient(
+
             90deg,
+
             transparent,
+
             rgba(255, 255, 255, 0.14),
+
             transparent
+
         );
 
+
+
     pointer-events: none;
+
 }
 
 
+
+
+
 /* =========================================================
+
    LCD 外框
-========================================================= */
+
+\========================================================= */
+
+
 
 .lcd-bezel {
+
     width: 270px;
+
     height: 102px;
+
+
 
     padding: 4px;
 
+
+
     flex-shrink: 0;
 
+
+
     background:
+
         linear-gradient(
+
             145deg,
+
             #0e1012,
+
             #303438
+
         );
+
+
 
     border-radius: 13px;
 
+
+
     box-shadow:
+
         inset 0 1px 1px rgba(255, 255, 255, 0.055),
+
         inset 0 -1px 2px rgba(0, 0, 0, 0.85),
+
         0 2px 4px rgba(0, 0, 0, 0.25);
+
 }
 
 
+
+
+
 /* =========================================================
+
    LCD
-========================================================= */
+
+\========================================================= */
+
+
 
 .lcd {
+
     position: relative;
 
+
+
     width: 100%;
+
     height: 100%;
+
+
 
     overflow: hidden;
 
+
+
     display: flex;
+
+
 
     flex-direction: column;
 
+
+
     justify-content: center;
+
     align-items: center;
+
+
 
     color: #ffffff;
 
+
+
     background:
+
         radial-gradient(
+
             circle at 50% 35%,
+
             #050707 0%,
+
             #010202 65%,
+
             #000000 100%
+
         );
 
+
+
     border:
+
         1px solid
+
         rgba(255, 255, 255, 0.035);
+
+
 
     border-radius: 9px;
 
+
+
     box-shadow:
+
         inset 0 0 18px rgba(0, 0, 0, 0.95);
 
+
+
     font-family:
+
         "SFMono-Regular",
+
         Consolas,
+
         "Microsoft YaHei",
+
         monospace;
+
 }
 
+
+
 .lcd::after {
+
     content: "";
+
+
 
     position: absolute;
 
+
+
     top: 0;
+
     left: 0;
+
     right: 0;
+
+
 
     height: 26px;
 
+
+
     pointer-events: none;
 
+
+
     background:
+
         linear-gradient(
+
             180deg,
+
             rgba(255, 255, 255, 0.022),
+
             transparent
+
         );
+
 }
 
 
+
+
+
 /* =========================================================
+
    LCD 顶部状态栏
-========================================================= */
+
+\========================================================= */
+
+
 
 .status-bar {
+
     position: absolute;
 
+
+
     top: 7px;
+
     left: 9px;
 
+
+
     z-index: 10;
+
+
 
     min-height: 16px;
 
+
+
     display: flex;
+
+
 
     align-items: center;
 
+
+
     gap: 7px;
+
 }
 
 
+
+
+
 /* =========================================================
+
    电池
-========================================================= */
+
+\========================================================= */
+
+
 
 .battery-status {
+
     display: flex;
 
+
+
     align-items: center;
+
+
 
     gap: 4px;
 
+
+
     color: var(--green);
 
+
+
     font-size: 9px;
+
     font-weight: 600;
+
 }
 
+
+
 .battery-shell {
+
     position: relative;
 
+
+
     width: 17px;
+
     height: 8px;
+
+
 
     padding: 1px;
 
+
+
     border:
+
         1.5px solid
+
         currentColor;
 
+
+
     border-radius: 2px;
+
 }
 
+
+
 .battery-shell::after {
+
     content: "";
+
+
 
     position: absolute;
 
+
+
     width: 2px;
+
     height: 4px;
 
+
+
     right: -4px;
+
     top: 1px;
 
+
+
     background: currentColor;
+
+
 
     border-radius:
+
         0
+
         1px
+
         1px
+
         0;
+
 }
 
+
+
 .battery-fill {
+
     width: 85%;
+
     height: 100%;
+
+
 
     background: currentColor;
 
+
+
     border-radius: 1px;
+
 }
+
+
 
 .battery-fill.green {
+
     color: var(--green);
+
 }
+
+
 
 .battery-fill.red {
+
     color: var(--red);
+
 }
 
+
+
 .battery-fill.orange {
+
     color: var(--orange);
+
 }
+
+
+
 
 
 /* =========================================================
+
    蓝牙
-========================================================= */
+
+\========================================================= */
+
+
 
 .bluetooth-icon {
+
     display: block;
 
+
+
     width: 14px;
+
     height: 14px;
+
+
 
     object-fit: contain;
 
+
+
     flex-shrink: 0;
+
 }
 
+
+
 .bluetooth-icon.orange {
+
     filter:
+
         brightness(0)
+
         saturate(100%)
+
         invert(68%)
+
         sepia(86%)
+
         saturate(1776%)
+
         hue-rotate(338deg)
+
         brightness(103%)
+
         contrast(101%);
+
 }
+
+
+
 
 
 /* =========================================================
+
    备用图标
-========================================================= */
+
+\========================================================= */
+
+
 
 .extra-icon {
+
     width: 14px;
+
     height: 14px;
+
+
 
     display: flex;
 
+
+
     align-items: center;
+
     justify-content: center;
 
+
+
     border:
+
         1px dashed
+
         #777;
 
+
+
     border-radius: 3px;
+
+
 
     color: #aaa;
 
+
+
     font-size: 9px;
+
 }
 
 
+
+
+
 /* =========================================================
+
    LCD文字
-========================================================= */
+
+\========================================================= */
+
+
 
 .line-main,
+
 .line-sub {
+
     position: relative;
+
+
 
     z-index: 1;
 
+
+
     max-width: 235px;
+
+
 
     overflow: hidden;
 
+
+
     white-space: nowrap;
+
+
 
     text-overflow: ellipsis;
 
+
+
     text-align: center;
+
 }
+
+
 
 .line-main {
+
     color: #ffffff;
 
+
+
     font-size: 15px;
+
     font-weight: 700;
 
+
+
     line-height: 20px;
+
 }
 
+
+
 .line-sub {
+
     margin-top: 4px;
+
+
 
     color: var(--gray);
 
+
+
     font-size: 10px;
+
 }
 
 
+
+
+
 /* =========================================================
+
    状态颜色
-========================================================= */
+
+\========================================================= */
+
+
 
 .text-red {
+
     color: var(--red);
+
 }
+
+
 
 .text-yellow {
+
     color: var(--yellow);
+
 }
+
+
 
 .text-blue {
+
     color: var(--blue);
+
 }
+
+
 
 .text-cyan {
+
     color: var(--cyan);
+
 }
 
+
+
 .text-green {
+
     color: var(--green);
+
 }
+
+
+
 
 
 /* =========================================================
+
    QR
-========================================================= */
+
+\========================================================= */
+
+
 
 .qr-code {
+
     position: relative;
+
+
 
     z-index: 2;
 
+
+
     width: 32px;
+
     height: 32px;
 
+
+
     margin-bottom: 4px;
+
+
 
     padding: 3px;
 
+
+
     background: white;
+
 }
+
+
 
 .qr-inner {
+
     width: 100%;
+
     height: 100%;
 
+
+
     background:
+
         linear-gradient(
+
             90deg,
+
             #000 25%,
+
             transparent 25% 50%,
+
             #000 50% 75%,
+
             transparent 75%
+
         ),
+
         linear-gradient(
+
             #000 25%,
+
             transparent 25% 50%,
+
             #000 50% 75%,
+
             transparent 75%
+
         );
 
+
+
     background-size: 8px 8px;
+
 }
+
+
+
 
 
 /* =========================================================
+
    Loading
-========================================================= */
+
+\========================================================= */
+
+
 
 .loading-icon {
+
     width: 21px;
+
     height: 21px;
+
+
 
     margin-bottom: 5px;
 
+
+
     border:
+
         3px solid
+
         #333;
+
+
 
     border-top-color: var(--blue);
 
+
+
     border-radius: 50%;
 
+
+
     animation:
+
         spin
+
         0.8s
+
         linear
+
         infinite;
+
 }
 
+
+
 @keyframes spin {
+
     to {
+
         transform: rotate(360deg);
+
     }
+
 }
+
+
+
 
 
 /* =========================================================
+
    成功
-========================================================= */
+
+\========================================================= */
+
+
 
 .success-icon {
+
     width: 25px;
+
     height: 25px;
+
+
 
     margin-bottom: 5px;
 
+
+
     display: flex;
 
+
+
     align-items: center;
+
     justify-content: center;
 
+
+
     border:
+
         2px solid
+
         var(--green);
 
+
+
     border-radius: 50%;
+
+
 
     color: var(--green);
 
+
+
     font-size: 16px;
+
 }
 
 
+
+
+
 /* =========================================================
+
    失败
-========================================================= */
+
+\========================================================= */
+
+
 
 .fail-icon {
+
     width: 25px;
+
     height: 25px;
+
+
 
     margin-bottom: 5px;
 
+
+
     display: flex;
 
+
+
     align-items: center;
+
     justify-content: center;
 
+
+
     border:
+
         2px solid
+
         var(--red);
 
+
+
     border-radius: 50%;
+
+
 
     color: var(--red);
 
+
+
     font-family:
+
         Arial,
+
         sans-serif;
 
+
+
     font-size: 20px;
+
     font-weight: 400;
 
+
+
     line-height: 1;
+
 }
 
 
+
+
+
 /* =========================================================
+
    标记
-========================================================= */
+
+\========================================================= */
+
+
 
 .mark-icon {
+
     margin-bottom: 4px;
+
+
 
     color: var(--yellow);
 
+
+
     font-size: 21px;
+
 }
 
 
+
+
+
 /* =========================================================
+
    OTA 图标
-========================================================= */
+
+\========================================================= */
+
+
 
 .update-icon {
+
     margin-bottom: 4px;
+
+
 
     color: var(--blue);
 
+
+
     font-size: 20px;
+
 }
+
+
+
 
 
 /* =========================================================
+
    OTA 布局
-========================================================= */
+
+\========================================================= */
+
+
 
 .lcd:has(.update-icon:not(.hidden)) {
+
     justify-content: center;
+
 }
 
+
+
 .lcd:has(.update-icon:not(.hidden))
+
 .update-icon {
+
     position: absolute;
 
+
+
     left: 62px;
+
     top: 30px;
+
+
 
     margin: 0;
 
+
+
     color: var(--blue);
 
+
+
     font-size: 20px;
+
     font-weight: 700;
 
+
+
     line-height: 22px;
+
 }
 
+
+
 .lcd:has(.update-icon:not(.hidden))
+
 .progress-area {
+
     position: absolute;
 
+
+
     left: 62px;
+
     top: 29px;
+
+
 
     width: 140px;
 
+
+
     margin: 0;
+
 }
 
+
+
 .lcd:has(.update-icon:not(.hidden))
+
 .progress-text {
+
     height: 22px;
 
+
+
     margin:
+
         0
+
         0
+
         7px
+
         25px;
+
+
 
     display: flex;
 
+
+
     align-items: center;
+
     justify-content: flex-start;
+
+
 
     color: white;
 
+
+
     text-align: left;
 
+
+
     font-size: 13px;
+
     font-weight: 700;
+
+
 
     line-height: 22px;
 
+
+
     white-space: nowrap;
+
 }
 
+
+
 .lcd:has(.update-icon:not(.hidden))
+
 .progress-track {
+
     width: 140px;
+
     height: 4px;
+
+
 
     margin: 0;
 
+
+
     overflow: hidden;
+
+
 
     background: #292c2e;
 
+
+
     border-radius: 5px;
+
 }
 
+
+
 .lcd:has(.update-icon:not(.hidden))
+
 .progress-fill {
+
     height: 100%;
+
+
 
     background: var(--blue);
 
+
+
     border-radius: 5px;
+
 }
+
+
+
 
 
 /* =========================================================
-   默认录音波形
+   录音状态 · 青蓝动态点阵
 ========================================================= */
 
-.wave {
-    height: 23px;
-
-    margin-bottom: 3px;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    gap: 3px;
-}
-
-.wave span {
-    width: 3px;
-    height: 6px;
-
-    background: var(--red);
-
-    border-radius: 2px;
-
-    animation:
-        waveMove
-        0.72s
-        ease-in-out
-        infinite;
-}
-
-.wave span:nth-child(1) {
-    animation-delay: 0s;
-}
-
-.wave span:nth-child(2) {
-    animation-delay: 0.08s;
-}
-
-.wave span:nth-child(3) {
-    animation-delay: 0.16s;
-}
-
-.wave span:nth-child(4) {
-    animation-delay: 0.24s;
-}
-
-.wave span:nth-child(5) {
-    animation-delay: 0.32s;
-}
-
-.wave span:nth-child(6) {
-    animation-delay: 0.40s;
-}
-
-.wave span:nth-child(7) {
-    animation-delay: 0.48s;
-}
-
-.wave span:nth-child(8) {
-    animation-delay: 0.56s;
-}
-
-.wave span:nth-child(9) {
-    animation-delay: 0.64s;
-}
-
-.wave span:nth-child(10) {
-    animation-delay: 0.18s;
-}
-
-.wave span:nth-child(11) {
-    animation-delay: 0.34s;
-}
-
-.wave span:nth-child(12) {
-    animation-delay: 0.50s;
-}
-
-.wave span:nth-child(13) {
-    animation-delay: 0.24s;
-}
-
-@keyframes waveMove {
-    0%,
-    100% {
-        height: 5px;
-    }
-
-    50% {
-        height: 22px;
-    }
-}
-
-
-/* =========================================================
-   录音中 · 横向布局
-
-   录音中 | 动态波形 | 00:23:18
-========================================================= */
-
-.lcd.recording-layout {
-    display: block;
-}
-
-
-/* 顶部状态栏 */
+.lcd.recording-layout { display: block; }
 
 .lcd.recording-layout .status-bar {
     position: absolute;
-
     top: 7px;
     left: 9px;
-
     z-index: 10;
-
     display: flex;
-
     align-items: center;
-
     gap: 7px;
 }
 
-
-/* 左侧：录音中 */
-
 .lcd.recording-layout .line-main {
     position: absolute;
-
-    left: 13px;
-    top: 52px;
-
-    z-index: 5;
-
+    left: 18px;
+    top: 51px;
+    z-index: 8;
     width: auto;
     max-width: none;
-
     margin: 0;
-
-    color: #ffffff;
-
+    padding: 0 0 0 13px;
+    color: #fff;
     font-size: 12px;
-    font-weight: 700;
-
+    font-weight: 600;
     line-height: 18px;
-
+    letter-spacing: .2px;
     text-align: left;
-
     white-space: nowrap;
-
     overflow: visible;
-
-    text-overflow: clip;
 }
 
+.lcd.recording-layout .line-main::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #ff3636;
+    transform: translateY(-50%);
+    box-shadow: 0 0 3px rgba(255,54,54,.95), 0 0 7px rgba(255,54,54,.38);
+    animation: recordingDotPulse 1.5s ease-in-out infinite;
+}
 
-/* 右侧：时间 */
+@keyframes recordingDotPulse {
+    0%,100% { opacity:.72; transform:translateY(-50%) scale(.88); }
+    50% { opacity:1; transform:translateY(-50%) scale(1); }
+}
 
 .lcd.recording-layout .line-sub {
     position: absolute;
-
     right: 12px;
-    top: 52px;
-
-    z-index: 5;
-
+    top: 51px;
+    z-index: 8;
     width: auto;
     max-width: none;
-
     margin: 0;
-
-    color: #ffffff;
-
+    padding: 0;
+    color: rgba(255,255,255,.98);
+    font-family: "SFMono-Regular","SF Mono","Roboto Mono","DIN Alternate","Courier New",monospace;
     font-size: 11px;
     font-weight: 600;
-
     line-height: 18px;
-
-    letter-spacing: 0;
-
+    letter-spacing: -.45px;
     text-align: right;
-
     white-space: nowrap;
-
     overflow: visible;
-
-    text-overflow: clip;
 }
 
-
-/* 中间：波形 */
-
-.lcd.recording-layout .wave {
+.lcd.recording-layout .wave.dot-wave {
     position: absolute;
-
     left: 50%;
-    top: 46px;
-
-    z-index: 5;
-
-    width: 92px;
-    height: 30px;
-
+    top: 60px;
+    z-index: 6;
+    width: 102px;
+    height: 12px;
     margin: 0;
-
+    padding: 0;
     display: flex;
-
     align-items: center;
     justify-content: center;
-
-    gap: 3px;
-
-    transform: translateX(-50%);
+    gap: 2.1px;
+    overflow: visible;
+    transform: translate(-50%, -50%);
 }
 
-.lcd.recording-layout .wave span {
-    display: block;
-
-    width: 3px;
-
-    flex:
-        0
-        0
-        3px;
-
-    margin: 0;
-
-    background: var(--red);
-
-    border-radius: 3px;
-
-    box-shadow:
-        0
-        0
-        3px
-        rgba(255, 54, 54, 0.28);
-
-    transform-origin: center;
-
-    animation:
-        recordingWave
-        0.72s
-        ease-in-out
-        infinite;
+.lcd.recording-layout .dot-wave .record-dot {
+    width: 2.2px;
+    height: 2.2px;
+    flex: 0 0 2.2px;
+    border-radius: 50%;
+    background: #25dddd;
+    opacity: .25;
+    animation: dotWavePulse 1.6s ease-in-out infinite;
+    animation-delay: calc(var(--i) * -0.055s);
 }
 
-
-/* =========================================================
-   录音波形高度
-========================================================= */
-
-.lcd.recording-layout .wave span:nth-child(1) {
-    height: 7px;
-    animation-delay: -0.10s;
+.lcd.recording-layout .dot-wave .record-dot:nth-child(n+7):nth-child(-n+19) {
+    opacity: .52;
 }
 
-.lcd.recording-layout .wave span:nth-child(2) {
-    height: 12px;
-    animation-delay: -0.32s;
+.lcd.recording-layout .dot-wave .record-dot:nth-child(n+10):nth-child(-n+16) {
+    width: 2.8px;
+    height: 2.8px;
+    flex-basis: 2.8px;
+    opacity: .85;
+    box-shadow: 0 0 4px rgba(37,221,221,.30);
 }
 
-.lcd.recording-layout .wave span:nth-child(3) {
-    height: 18px;
-    animation-delay: -0.18s;
+.lcd.recording-layout .dot-wave .record-dot:nth-child(13) {
+    width: 3.5px;
+    height: 3.5px;
+    flex-basis: 3.5px;
+    opacity: 1;
+    box-shadow: 0 0 4px rgba(37,221,221,.60), 0 0 7px rgba(37,221,221,.20);
 }
 
-.lcd.recording-layout .wave span:nth-child(4) {
-    height: 11px;
-    animation-delay: -0.46s;
+@keyframes dotWavePulse {
+    0%,100% { transform:translateY(0) scale(.72); opacity:.24; }
+    28% { transform:translateY(-1px) scale(.90); opacity:.55; }
+    50% { transform:translateY(0) scale(1.08); opacity:1; }
+    72% { transform:translateY(1px) scale(.88); opacity:.52; }
 }
 
-.lcd.recording-layout .wave span:nth-child(5) {
-    height: 23px;
-    animation-delay: -0.25s;
-}
-
-.lcd.recording-layout .wave span:nth-child(6) {
-    height: 16px;
-    animation-delay: -0.55s;
-}
-
-.lcd.recording-layout .wave span:nth-child(7) {
-    height: 27px;
-    animation-delay: -0.14s;
-}
-
-.lcd.recording-layout .wave span:nth-child(8) {
-    height: 18px;
-    animation-delay: -0.40s;
-}
-
-.lcd.recording-layout .wave span:nth-child(9) {
-    height: 24px;
-    animation-delay: -0.21s;
-}
-
-.lcd.recording-layout .wave span:nth-child(10) {
-    height: 12px;
-    animation-delay: -0.50s;
-}
-
-.lcd.recording-layout .wave span:nth-child(11) {
-    height: 19px;
-    animation-delay: -0.28s;
-}
-
-.lcd.recording-layout .wave span:nth-child(12) {
-    height: 11px;
-    animation-delay: -0.60s;
-}
-
-.lcd.recording-layout .wave span:nth-child(13) {
-    height: 7px;
-    animation-delay: -0.36s;
-}
-
-
-/* =========================================================
-   录音波形动画
-========================================================= */
-
-@keyframes recordingWave {
-    0%,
-    100% {
-        transform: scaleY(0.38);
-        opacity: 0.70;
-    }
-
-    25% {
-        transform: scaleY(0.76);
-        opacity: 0.90;
-    }
-
-    50% {
-        transform: scaleY(1);
-        opacity: 1;
-    }
-
-    75% {
-        transform: scaleY(0.56);
-        opacity: 0.82;
+@media (prefers-reduced-motion: reduce) {
+    .lcd.recording-layout .dot-wave .record-dot,
+    .lcd.recording-layout .line-main::before {
+        animation: none !important;
     }
 }
 
 
 /* =========================================================
+
    默认进度条
-========================================================= */
+
+\========================================================= */
+
+
 
 .progress-area {
+
     width: 150px;
 
+
+
     margin-top: 6px;
+
 }
 
+
+
 .progress-text {
+
     margin-bottom: 4px;
+
+
 
     color: white;
 
+
+
     text-align: center;
 
+
+
     font-size: 10px;
+
 }
 
+
+
 .progress-track {
+
     width: 100%;
+
     height: 4px;
+
+
 
     overflow: hidden;
 
+
+
     background: #292c2e;
 
+
+
     border-radius: 5px;
+
 }
 
+
+
 .progress-fill {
+
     width: 65%;
+
     height: 100%;
+
+
 
     background: var(--blue);
 
+
+
     border-radius: 5px;
+
 }
 
+
+
 .progress-fill.cyan {
+
     background: var(--cyan);
+
 }
+
+
+
 
 
 /* =========================================================
+
    蓝牙传输
-========================================================= */
+
+\========================================================= */
+
+
 
 .progress-area.ble-transfer-layout {
+
     position: absolute;
 
+
+
     left: 50%;
+
     top: 39px;
+
+
 
     width: 180px;
 
+
+
     margin: 0;
 
+
+
     transform: translateX(-50%);
+
 }
 
+
+
 .progress-area.ble-transfer-layout
+
 .progress-text {
+
     margin:
+
         0
+
         0
+
         8px;
+
+
 
     color: var(--blue);
 
+
+
     font-size: 14px;
+
     font-weight: 700;
+
+
 
     line-height: 18px;
 
+
+
     text-align: center;
 
+
+
     white-space: nowrap;
+
 }
 
+
+
 .progress-area.ble-transfer-layout
+
 .progress-track {
+
     width: 180px;
+
     height: 4px;
+
+
 
     margin: 0;
 
+
+
     overflow: hidden;
+
+
 
     background: #292c2e;
 
+
+
     border-radius: 5px;
+
 }
 
+
+
 .progress-area.ble-transfer-layout
+
 .progress-fill {
+
     height: 100%;
+
+
 
     background: var(--blue);
 
+
+
     border-radius: 5px;
+
 }
+
+
+
 
 
 /* =========================================================
+
    Wi-Fi传输
-========================================================= */
+
+\========================================================= */
+
+
 
 .progress-area.wifi-transfer-layout {
+
     position: absolute;
 
+
+
     left: 50%;
+
     top: 39px;
+
+
 
     width: 180px;
 
+
+
     margin: 0;
 
+
+
     transform: translateX(-50%);
+
 }
 
+
+
 .progress-area.wifi-transfer-layout
+
 .progress-text {
+
     margin:
+
         0
+
         0
+
         8px;
+
+
 
     color: var(--cyan);
 
+
+
     font-size: 14px;
+
     font-weight: 700;
+
+
 
     line-height: 18px;
 
+
+
     text-align: center;
 
+
+
     white-space: nowrap;
+
 }
 
+
+
 .progress-area.wifi-transfer-layout
+
 .progress-track {
+
     width: 180px;
+
     height: 4px;
+
+
 
     margin: 0;
 
+
+
     overflow: hidden;
+
+
 
     background: #292c2e;
 
+
+
     border-radius: 5px;
+
 }
 
+
+
 .progress-area.wifi-transfer-layout
+
 .progress-fill {
+
     height: 100%;
+
+
 
     background: var(--cyan);
 
+
+
     border-radius: 5px;
+
 }
 
 
+
+
+
 /* =========================================================
+
    充电动画
-========================================================= */
+
+\========================================================= */
+
+
 
 @keyframes chargingBattery {
+
     0% {
+
         width: 15%;
+
     }
+
+
 
     50% {
+
         width: 100%;
+
     }
+
+
 
     100% {
+
         width: 15%;
+
     }
+
 }
+
+
 
 .battery-fill.charging-animation {
+
     animation:
+
         chargingBattery
+
         1.6s
+
         linear
+
         infinite;
+
 }
 
 
+
+
+
 /* =========================================================
+
    LED
-========================================================= */
+
+\========================================================= */
+
+
 
 .led-area {
+
     width: 26px;
+
     height: 100%;
 
+
+
     display: flex;
 
+
+
     align-items: center;
+
     justify-content: center;
+
+
 
     flex-shrink: 0;
+
 }
 
+
+
 .led-ring {
+
     width: 19px;
+
     height: 19px;
+
+
 
     display: flex;
 
+
+
     align-items: center;
+
     justify-content: center;
 
+
+
     border-radius: 50%;
 
+
+
     background:
+
         radial-gradient(
+
             circle,
+
             #292d31,
+
             #171a1d
+
         );
 
+
+
     box-shadow:
+
         inset
+
         0
+
         1px
+
         2px
+
         rgba(255, 255, 255, 0.035);
+
 }
+
+
 
 .led {
+
     width: 8px;
+
     height: 8px;
 
+
+
     background:
+
         radial-gradient(
+
             circle at 38% 35%,
+
             #666b70,
+
             #3b3f43 60%,
+
             #292c30
+
         );
+
+
 
     border-radius: 50%;
 
+
+
     box-shadow:
+
         inset
+
         0
+
         0
+
         3px
+
         rgba(0, 0, 0, 0.9);
+
 }
+
+
 
 .led.recording {
+
     background:
+
         radial-gradient(
+
             circle at 38% 35%,
+
             #ff8585,
+
             #ff3636 45%,
+
             #b90f18 100%
+
         );
 
+
+
     box-shadow:
-        0
-        0
-        4px
-        rgba(255, 54, 54, 0.95),
 
         0
+
         0
+
+        4px
+
+        rgba(255, 54, 54, 0.95),
+
+
+
+        0
+
+        0
+
         10px
+
         rgba(255, 54, 54, 0.4);
+
 }
+
+
+
 
 
 /* =========================================================
+
    右侧区域
-========================================================= */
+
+\========================================================= */
+
+
 
 .right-panel {
+
     min-width: 0;
+
 }
 
+
+
 .controls {
+
     display: flex;
+
+
 
     flex-direction: column;
 
+
+
     gap: 10px;
+
 }
 
 
+
+
+
 /* =========================================================
+
    控制卡片
-========================================================= */
+
+\========================================================= */
+
+
 
 .control-group {
+
     padding:
+
         10px
+
         15px
+
         12px;
+
+
 
     overflow: hidden;
 
+
+
     background:
+
         rgba(255, 255, 255, 0.97);
 
+
+
     border:
+
         1px solid
+
         rgba(222, 227, 233, 0.48);
+
+
 
     border-radius: 17px;
 
+
+
     box-shadow:
+
         0
+
         4px
+
         15px
+
         rgba(40, 50, 70, 0.038);
+
 }
 
 
+
+
+
 /* =========================================================
+
    卡片标题
-========================================================= */
+
+\========================================================= */
+
+
 
 .control-title {
+
     min-height: 30px;
+
+
 
     margin-bottom: 7px;
 
+
+
     display: flex;
+
+
 
     align-items: center;
 
+
+
     gap: 9px;
+
 }
 
+
+
 .control-title h2 {
+
     margin: 0;
+
+
 
     color: #17191c;
 
+
+
     font-size: 15px;
+
     font-weight: 700;
 
+
+
     line-height: 1.2;
+
 }
+
+
+
 
 
 /* =========================================================
+
    分类图标
-========================================================= */
+
+\========================================================= */
+
+
 
 .control-icon {
+
     width: 30px;
+
     height: 30px;
 
+
+
     flex:
+
         0
+
         0
+
         30px;
+
+
 
     display: flex;
 
+
+
     align-items: center;
+
     justify-content: center;
 
+
+
     border-radius: 50%;
+
 }
 
+
+
 .control-icon svg {
+
     width: 17px;
+
     height: 17px;
+
+
 
     fill: none;
 
+
+
     stroke: currentColor;
+
+
 
     stroke-width: 1.8;
 
+
+
     stroke-linecap: round;
+
     stroke-linejoin: round;
+
 }
+
+
+
 
 
 /* 设备 */
 
+
+
 .device-icon {
+
     color: #2298ee;
+
     background: #e3f4ff;
+
 }
+
+
 
 .device-icon svg {
+
     width: 16px;
+
     height: 16px;
 
+
+
     stroke-width: 1.6;
+
 }
+
+
+
 
 
 /* 录音 */
 
+
+
 .record-icon {
+
     color: #f44f5b;
+
     background: #ffe7e9;
+
 }
+
+
+
 
 
 /* 电量 */
 
+
+
 .battery-icon {
+
     color: #18b56b;
+
     background: #e2f8ec;
+
 }
 
+
+
 .battery-icon svg {
+
     fill: currentColor;
+
     stroke: none;
+
 }
+
+
+
 
 
 /* 蓝牙 */
 
+
+
 .bluetooth-control-icon {
+
     color: #2298ee;
+
     background: #e3f4ff;
+
 }
+
+
+
 
 
 /* 传输 */
 
+
+
 .transfer-icon {
+
     color: #18b66b;
+
     background: #e1f8eb;
+
 }
+
+
+
 
 
 /* 存储 */
 
+
+
 .storage-icon {
+
     color: #8058e8;
+
     background: #eee7ff;
+
 }
+
+
+
 
 
 /* 系统 */
 
+
+
 .system-icon {
+
     color: #f19520;
+
     background: #fff0da;
+
 }
+
+
 
 .system-icon svg path:first-child {
+
     fill: currentColor;
+
     stroke: currentColor;
+
 }
 
+
+
 .system-icon svg path:not(:first-child) {
+
     stroke: white;
+
     stroke-width: 2;
+
 }
+
+
+
 
 
 /* OTA */
 
+
+
 .ota-icon {
+
     color: #259ce7;
+
     background: #e2f4ff;
+
 }
+
+
+
 
 
 /* LED */
 
+
+
 .led-control-icon {
+
     color: #f34c58;
+
     background: #ffe7e9;
+
 }
 
 
+
+
+
 /* =========================================================
+
    按钮网格
-========================================================= */
+
+\========================================================= */
+
+
 
 .button-grid {
+
     display: grid;
 
+
+
     grid-template-columns:
+
         repeat(
+
             3,
+
             minmax(0, 1fr)
+
         );
 
+
+
     gap:
+
         7px
+
         9px;
+
 }
 
 
+
+
+
 /* =========================================================
+
    按钮 · 默认状态
-========================================================= */
+
+\========================================================= */
+
+
 
 button {
+
     width: 100%;
+
+
 
     min-height: 32px;
 
+
+
     padding:
+
         5px
+
         9px;
 
+
+
     border:
+
         1px solid
+
         #dfe3e8;
+
+
 
     border-radius: 8px;
 
+
+
     outline: none;
 
+
+
     background:
+
         linear-gradient(
+
             180deg,
+
             #ffffff 0%,
+
             #fbfcfd 100%
+
         );
+
+
 
     color: #30343a;
 
+
+
     cursor: pointer;
+
+
 
     font-family: inherit;
 
+
+
     font-size: 12px;
+
     font-weight: 500;
 
+
+
     box-shadow:
+
         0
+
         1px
+
         2px
+
         rgba(20, 30, 40, 0.018);
 
+
+
     transition:
+
         color 0.16s ease,
+
         background 0.16s ease,
+
         border-color 0.16s ease,
+
         box-shadow 0.16s ease,
+
         transform 0.10s ease;
+
 }
 
 
+
+
+
 /* =========================================================
+
    Hover
 
+
+
    轻微变化：
+
    只是告诉用户“这个按钮可以点”
-========================================================= */
+
+\========================================================= */
+
+
 
 button:hover {
+
     color: #248fe0;
 
+
+
     background:
+
         linear-gradient(
+
             180deg,
+
             #fafcfe 0%,
+
             #f4f9fd 100%
+
         );
+
+
 
     border-color: #b7d9f2;
 
+
+
     box-shadow:
+
         0
+
         2px
+
         6px
+
         rgba(31, 128, 199, 0.06);
+
 }
 
 
+
+
+
 /* =========================================================
+
    Active / 当前选中
 
+
+
    与 Hover 明显区分：
+
    蓝色底
+
    蓝色描边
+
    蓝色文字
+
    字重增加
-========================================================= */
+
+\========================================================= */
+
+
 
 button.active {
+
     color: #087fd8;
 
+
+
     background:
+
         linear-gradient(
+
             180deg,
+
             #e8f5ff 0%,
+
             #dcefff 100%
+
         );
+
+
 
     border-color: #289cf0;
 
+
+
     font-weight: 600;
 
+
+
     box-shadow:
+
         inset
-        0
-        0
-        0
-        1px
-        rgba(40, 156, 240, 0.08),
 
         0
+
+        0
+
+        0
+
+        1px
+
+        rgba(40, 156, 240, 0.08),
+
+
+
+        0
+
         2px
+
         7px
+
         rgba(40, 156, 240, 0.10);
+
 }
 
 
+
+
+
 /* =========================================================
+
    Active + Hover
 
+
+
    已经选中的按钮再 Hover
+
    比 Active 稍微深一点
-========================================================= */
+
+\========================================================= */
+
+
 
 button.active:hover {
+
     color: #0674c6;
 
+
+
     background:
+
         linear-gradient(
+
             180deg,
+
             #dff1ff 0%,
+
             #d2eaff 100%
+
         );
+
+
 
     border-color: #178ee5;
 
+
+
     font-weight: 600;
 
+
+
     box-shadow:
+
         inset
+
         0
+
         0
+
         0
+
         1px
+
         rgba(23, 142, 229, 0.10),
 
+
+
         0
+
         3px
+
         8px
+
         rgba(23, 142, 229, 0.13);
+
 }
 
 
+
+
+
 /* =========================================================
+
    点击瞬间
-========================================================= */
+
+\========================================================= */
+
+
 
 button:active {
+
     transform:
+
         scale(0.985);
+
 }
 
 
+
+
+
 /* =========================================================
+
    键盘焦点
-========================================================= */
+
+\========================================================= */
+
+
 
 button:focus-visible {
+
     outline:
+
         2px solid
+
         rgba(40, 156, 240, 0.28);
 
+
+
     outline-offset: 2px;
+
 }
 
 
+
+
+
 /* =========================================================
+
    隐藏
-========================================================= */
+
+\========================================================= */
+
+
 
 .hidden {
+
     display: none !important;
+
 }
 
 
+
+
+
 /* =========================================================
+
    中等屏幕
-========================================================= */
+
+\========================================================= */
+
+
 
 @media (max-width: 1050px) {
 
+
+
     .workspace {
+
         grid-template-columns:
+
             380px
+
             minmax(0, 1fr);
 
+
+
         gap: 20px;
+
     }
+
+
 
     .left-panel {
+
         width: 380px;
+
     }
 
+
+
     .device {
+
         width: 370px;
+
     }
+
+
 
 }
 
 
+
+
+
 /* =========================================================
+
    平板
-========================================================= */
+
+\========================================================= */
+
+
 
 @media (max-width: 900px) {
 
+
+
     .workspace {
+
         display: flex;
+
+
 
         flex-direction: column;
 
+
+
         gap: 22px;
+
     }
 
+
+
     .left-panel {
+
         width: 100%;
+
+
 
         padding-top: 0;
 
+
+
         position: static;
+
     }
+
+
 
     .right-panel {
+
         width: 100%;
+
     }
+
+
 
     .prototype-area {
+
         justify-content: center;
+
     }
+
+
 
     .page-header {
+
         top: 0;
 
+
+
         padding:
+
             10px
+
             0
+
             11px;
+
     }
+
+
 
 }
 
 
+
+
+
 /* =========================================================
+
    手机
-========================================================= */
+
+\========================================================= */
+
+
 
 @media (max-width: 620px) {
 
+
+
     .page {
+
         padding:
+
             18px
+
             12px
+
             32px;
+
     }
+
+
 
     .page-header {
+
         margin-bottom: 17px;
+
     }
+
+
 
     .page-header h1 {
+
         font-size: 20px;
 
+
+
         line-height: 28px;
+
     }
+
+
+
 
 
     /* 设备 */
 
+
+
     .device {
+
         width: 335px;
+
         max-width: 100%;
+
+
 
         height: 124px;
 
+
+
         padding:
+
             14px
+
             16px;
+
+
 
         gap: 10px;
 
+
+
         border-radius: 22px;
+
     }
 
+
+
     .lcd-bezel {
+
         width: 245px;
+
         height: 94px;
+
+
 
         padding: 4px;
 
+
+
         border-radius: 12px;
+
     }
 
+
+
     .lcd {
+
         border-radius: 8px;
+
     }
+
+
+
 
 
     /* LCD文字 */
 
+
+
     .line-main {
+
         font-size: 14px;
+
     }
+
+
 
     .line-sub {
+
         margin-top: 3px;
 
+
+
         font-size: 10px;
+
     }
+
+
+
 
 
     /* 状态栏 */
 
+
+
     .status-bar {
+
         top: 6px;
+
         left: 8px;
+
     }
+
+
 
     .bluetooth-icon {
+
         width: 13px;
+
         height: 13px;
+
     }
-
-
     /* =====================================================
        手机录音横向布局
     ===================================================== */
@@ -1962,200 +3356,457 @@ button:focus-visible {
     }
 
     .lcd.recording-layout .line-main {
-        left: 10px;
-        top: 47px;
-
-        font-size: 11px;
-
+        left: 12px;
+        top: 46px;
+        padding-left: 11px;
+        font-size: 10px;
         line-height: 17px;
+    }
+
+    .lcd.recording-layout .line-main::before {
+        width: 5px;
+        height: 5px;
     }
 
     .lcd.recording-layout .line-sub {
-        right: 9px;
-        top: 47px;
-
-        font-size: 10px;
-
+        right: 8px;
+        top: 46px;
+        font-size: 9px;
         line-height: 17px;
+        letter-spacing: -.55px;
     }
 
-    .lcd.recording-layout .wave {
-        top: 42px;
-
+    .lcd.recording-layout .wave.dot-wave {
+        top: 55px;
         width: 82px;
-        height: 27px;
-
-        gap: 2.5px;
+        height: 10px;
+        gap: 1.7px;
     }
 
-    .lcd.recording-layout .wave span {
-        width: 3px;
 
-        flex:
-            0
-            0
-            3px;
-    }
+
+
+
 
 
     /* LED */
 
+
+
     .led-area {
+
         width: 22px;
+
     }
+
+
 
     .led-ring {
+
         width: 17px;
+
         height: 17px;
+
     }
 
+
+
     .led {
+
         width: 7px;
+
         height: 7px;
+
     }
+
+
+
 
 
     /* OTA */
 
+
+
     .lcd:has(.update-icon:not(.hidden))
+
     .update-icon {
+
         left: 52px;
+
         top: 27px;
 
+
+
         font-size: 18px;
+
     }
 
+
+
     .lcd:has(.update-icon:not(.hidden))
+
     .progress-area {
+
         left: 52px;
+
         top: 26px;
 
+
+
         width: 130px;
+
     }
 
+
+
     .lcd:has(.update-icon:not(.hidden))
+
     .progress-text {
+
         height: 21px;
 
+
+
         margin:
+
             0
+
             0
+
             6px
+
             23px;
+
+
 
         font-size: 12px;
 
+
+
         line-height: 21px;
+
     }
 
+
+
     .lcd:has(.update-icon:not(.hidden))
+
     .progress-track {
+
         width: 130px;
+
     }
+
+
+
 
 
     /* 蓝牙传输 */
 
+
+
     .progress-area.ble-transfer-layout {
+
         top: 36px;
 
+
+
         width: 165px;
+
     }
 
+
+
     .progress-area.ble-transfer-layout
+
     .progress-text {
+
         margin-bottom: 7px;
 
+
+
         font-size: 13px;
+
     }
 
+
+
     .progress-area.ble-transfer-layout
+
     .progress-track {
+
         width: 165px;
+
     }
+
+
+
 
 
     /* Wi-Fi传输 */
 
+
+
     .progress-area.wifi-transfer-layout {
+
         top: 36px;
 
+
+
         width: 165px;
+
     }
 
+
+
     .progress-area.wifi-transfer-layout
+
     .progress-text {
+
         margin-bottom: 7px;
 
+
+
         font-size: 13px;
+
     }
 
+
+
     .progress-area.wifi-transfer-layout
+
     .progress-track {
+
         width: 165px;
+
     }
+
+
+
 
 
     /* 控制卡片 */
 
+
+
     .controls {
+
         gap: 9px;
+
     }
+
+
 
     .control-group {
+
         padding:
+
             10px
+
             11px
+
             11px;
 
+
+
         border-radius: 14px;
+
     }
 
+
+
     .control-title {
+
         min-height: 28px;
+
+
 
         margin-bottom: 7px;
 
+
+
         gap: 8px;
+
     }
+
+
 
     .control-icon {
+
         width: 28px;
+
         height: 28px;
 
+
+
         flex-basis: 28px;
+
     }
+
+
 
     .control-icon svg {
+
         width: 16px;
+
         height: 16px;
+
     }
 
+
+
     .control-title h2 {
+
         font-size: 14px;
+
     }
+
+
+
 
 
     /* 按钮 */
 
+
+
     .button-grid {
+
         grid-template-columns:
+
             repeat(
+
                 2,
+
                 minmax(0, 1fr)
+
             );
 
+
+
         gap: 7px;
+
     }
 
+
+
     button {
+
         min-height: 32px;
 
+
+
         padding:
+
             5px
+
             6px;
 
+
+
         font-size: 12px;
+
+    }
+
+
+
+}
+
+/* =========================================================
+   左侧原型说明
+========================================================= */
+
+/* 让设备和说明上下排列 */
+.prototype-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+
+/* 说明区域 */
+.prototype-note {
+    width: 385px;
+    max-width: 100%;
+
+    margin-top: 20px;
+    padding: 0 1px;
+
+    display: flex;
+    align-items: flex-start;
+
+    gap: 8px;
+
+    color: #a6adb5;
+
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 18px;
+}
+
+
+/* 左侧 i 图标 */
+.prototype-note-icon {
+    width: 15px;
+    height: 15px;
+
+    margin-top: 1px;
+
+    flex: 0 0 15px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #b9c1c9;
+    border-radius: 50%;
+
+    color: #aeb7c0;
+
+    font-family: Arial, sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    line-height: 1;
+}
+
+
+/* 说明文字 */
+.prototype-note-text {
+    display: block;
+
+    flex: 1;
+
+    min-width: 0;
+}
+
+
+/* =========================================================
+   手机适配
+========================================================= */
+
+@media (max-width: 620px) {
+
+    .prototype-note {
+        width: 335px;
+        max-width: 100%;
+
+        margin-top: 16px;
+        padding: 0 2px;
+
+        gap: 7px;
+
+        font-size: 10px;
+        line-height: 17px;
+    }
+
+
+    .prototype-note-icon {
+        width: 14px;
+        height: 14px;
+
+        flex-basis: 14px;
+
+        font-size: 8px;
     }
 
 }
