@@ -40,6 +40,9 @@ const lcd = document.querySelector(".lcd");
 
 let stateTimer = null;
 
+/* 传输进度动画 */
+let progressTimer = null;
+
 
 /* =========================================================
    电池
@@ -62,14 +65,99 @@ function setBattery(percent, color = "green") {
 
 
 /* =========================================================
+   动态传输进度
+========================================================= */
+
+function animateProgress(target, label) {
+
+    /* 停止旧动画 */
+
+    if (progressTimer) {
+        clearInterval(progressTimer);
+        progressTimer = null;
+    }
+
+
+    let current = 0;
+
+
+    /* 从0开始 */
+
+    progressFill.style.width =
+        "0%";
+
+    progressText.textContent =
+        `${label}  0%`;
+
+
+    /*
+     * 38ms 增加1%
+     *
+     * 65% ≈ 2.5秒
+     * 80% ≈ 3秒
+     */
+
+    progressTimer = setInterval(
+        () => {
+
+            current += 1;
+
+
+            /* 防止超过目标值 */
+
+            if (current > target) {
+                current = target;
+            }
+
+
+            /* 更新进度条 */
+
+            progressFill.style.width =
+                current + "%";
+
+
+            /* 更新百分比文字 */
+
+            progressText.textContent =
+                `${label}  ${current}%`;
+
+
+            /* 到达目标 */
+
+            if (current >= target) {
+
+                clearInterval(
+                    progressTimer
+                );
+
+                progressTimer = null;
+            }
+
+        },
+        38
+    );
+}
+
+
+/* =========================================================
    LCD 重置
 ========================================================= */
 
 function resetLCD() {
 
+    /* 停止状态计时 */
+
     if (stateTimer) {
         clearTimeout(stateTimer);
         stateTimer = null;
+    }
+
+
+    /* 停止传输动画 */
+
+    if (progressTimer) {
+        clearInterval(progressTimer);
+        progressTimer = null;
     }
 
 
@@ -87,16 +175,22 @@ function resetLCD() {
        状态栏
     ====================================================== */
 
-    statusBar.classList.remove("hidden");
+    statusBar.classList.remove(
+        "hidden"
+    );
 
-    batteryStatus.classList.remove("hidden");
+    batteryStatus.classList.remove(
+        "hidden"
+    );
 
     bluetoothIcon.classList.remove(
         "hidden",
         "orange"
     );
 
-    extraIcon.classList.add("hidden");
+    extraIcon.classList.add(
+        "hidden"
+    );
 
 
     /* =====================================================
@@ -117,12 +211,14 @@ function resetLCD() {
 
 
     if (chargeBatteryFill) {
+
         chargeBatteryFill.style.width =
             "0%";
     }
 
 
     if (chargeBatteryValue) {
+
         chargeBatteryValue.textContent =
             "";
     }
@@ -132,18 +228,27 @@ function resetLCD() {
        中央状态图标
     ====================================================== */
 
-    qrCode.classList.add("hidden");
+    qrCode.classList.add(
+        "hidden"
+    );
 
-    loadingIcon.classList.add("hidden");
+    loadingIcon.classList.add(
+        "hidden"
+    );
 
-    successIcon.classList.add("hidden");
+    successIcon.classList.add(
+        "hidden"
+    );
 
-    failIcon.classList.add("hidden");
+    failIcon.classList.add(
+        "hidden"
+    );
 
 
-    /* 系统异常图标 */
+    /* 系统异常统一图标 */
 
     if (systemErrorIcon) {
+
         systemErrorIcon.classList.add(
             "hidden"
         );
@@ -153,6 +258,7 @@ function resetLCD() {
     /* 结束录音 */
 
     if (recordEndIcon) {
+
         recordEndIcon.classList.add(
             "hidden"
         );
@@ -162,22 +268,29 @@ function resetLCD() {
     /* LCD录音红点 */
 
     if (lcdRecordLight) {
+
         lcdRecordLight.classList.add(
             "hidden"
         );
     }
 
 
-    markIcon.classList.add("hidden");
+    markIcon.classList.add(
+        "hidden"
+    );
 
-    updateIcon.classList.add("hidden");
+    updateIcon.classList.add(
+        "hidden"
+    );
 
 
     /* =====================================================
        波形
     ====================================================== */
 
-    wave.classList.add("hidden");
+    wave.classList.add(
+        "hidden"
+    );
 
 
     /* =====================================================
@@ -217,9 +330,11 @@ function resetLCD() {
        LCD文字
     ====================================================== */
 
-    line1.textContent = "";
+    line1.textContent =
+        "";
 
-    line2.textContent = "";
+    line2.textContent =
+        "";
 
 
     line1.classList.remove(
@@ -250,6 +365,7 @@ function resetLCD() {
 
 
     if (ledArea) {
+
         ledArea.classList.remove(
             "led-area-hidden"
         );
@@ -269,7 +385,7 @@ function resetLCD() {
 
 /* =========================================================
    系统异常
-   左侧：统一警告图标
+   左侧：统一圆形警告图标
    右侧第一行：错误原因
    右侧第二行：错误码
 ========================================================= */
@@ -277,13 +393,16 @@ function resetLCD() {
 function showSystemError(title, code) {
 
     if (lcd) {
+
         lcd.classList.add(
             "system-error-layout"
         );
     }
 
 
-    /* 隐藏顶部状态 */
+    /* =====================================================
+       隐藏顶部状态
+    ====================================================== */
 
     statusBar.classList.add(
         "hidden"
@@ -302,7 +421,9 @@ function showSystemError(title, code) {
     );
 
 
-    /* 隐藏其他图标 */
+    /* =====================================================
+       隐藏其他图标
+    ====================================================== */
 
     qrCode.classList.add(
         "hidden"
@@ -330,6 +451,7 @@ function showSystemError(title, code) {
 
 
     if (recordEndIcon) {
+
         recordEndIcon.classList.add(
             "hidden"
         );
@@ -337,48 +459,62 @@ function showSystemError(title, code) {
 
 
     if (lcdRecordLight) {
+
         lcdRecordLight.classList.add(
             "hidden"
         );
     }
 
 
-    /* 显示统一系统异常图标 */
+    /* =====================================================
+       显示统一系统异常图标
+    ====================================================== */
 
     if (systemErrorIcon) {
+
         systemErrorIcon.classList.remove(
             "hidden"
         );
     }
 
 
-    /* 隐藏波形 */
+    /* =====================================================
+       隐藏波形
+    ====================================================== */
 
     wave.classList.add(
         "hidden"
     );
 
 
-    /* 隐藏进度 */
+    /* =====================================================
+       隐藏进度
+    ====================================================== */
 
     progressArea.classList.add(
         "hidden"
     );
 
 
-    /* 错误原因 */
+    /* =====================================================
+       错误原因
+    ====================================================== */
 
     line1.textContent =
         title;
 
 
-    /* 错误码 */
+    /* =====================================================
+       错误码
+    ====================================================== */
 
     line2.textContent =
         code;
 
 
-    /* 系统异常统一使用白色 */
+    /* =====================================================
+       系统异常文字统一
+    ====================================================== */
 
     line1.classList.remove(
         "text-red",
@@ -405,6 +541,7 @@ function showSystemError(title, code) {
 function showNoDisplay() {
 
     if (lcd) {
+
         lcd.classList.remove(
             "recording-layout",
             "system-error-layout"
@@ -412,7 +549,9 @@ function showNoDisplay() {
     }
 
 
-    /* 状态栏 */
+    /* =====================================================
+       状态栏
+    ====================================================== */
 
     statusBar.classList.add(
         "hidden"
@@ -431,7 +570,9 @@ function showNoDisplay() {
     );
 
 
-    /* 充电 */
+    /* =====================================================
+       充电
+    ====================================================== */
 
     if (chargeDisplay) {
 
@@ -446,7 +587,9 @@ function showNoDisplay() {
     }
 
 
-    /* 图标 */
+    /* =====================================================
+       图标
+    ====================================================== */
 
     qrCode.classList.add(
         "hidden"
@@ -466,6 +609,7 @@ function showNoDisplay() {
 
 
     if (systemErrorIcon) {
+
         systemErrorIcon.classList.add(
             "hidden"
         );
@@ -473,6 +617,7 @@ function showNoDisplay() {
 
 
     if (recordEndIcon) {
+
         recordEndIcon.classList.add(
             "hidden"
         );
@@ -480,6 +625,7 @@ function showNoDisplay() {
 
 
     if (lcdRecordLight) {
+
         lcdRecordLight.classList.add(
             "hidden"
         );
@@ -495,27 +641,36 @@ function showNoDisplay() {
     );
 
 
-    /* 波形 */
+    /* =====================================================
+       波形
+    ====================================================== */
 
     wave.classList.add(
         "hidden"
     );
 
 
-    /* 进度 */
+    /* =====================================================
+       进度
+    ====================================================== */
 
     progressArea.classList.add(
         "hidden"
     );
 
 
-    /* 文字 */
+    /* =====================================================
+       文字
+    ====================================================== */
 
-    line1.textContent = "";
+    line1.textContent =
+        "";
 
-    line2.textContent = "";
+    line2.textContent =
+        "";
 
-    progressText.textContent = "";
+    progressText.textContent =
+        "";
 }
 
 
@@ -526,6 +681,7 @@ function showNoDisplay() {
 function showRecording() {
 
     if (lcd) {
+
         lcd.classList.add(
             "recording-layout"
         );
@@ -768,6 +924,7 @@ function setState(state) {
         case "recordEnd":
 
             if (recordEndIcon) {
+
                 recordEndIcon.classList.remove(
                     "hidden"
                 );
@@ -901,8 +1058,11 @@ function setState(state) {
             }
 
 
-            line1.textContent = "";
-            line2.textContent = "";
+            line1.textContent =
+                "";
+
+            line2.textContent =
+                "";
 
             break;
 
@@ -949,8 +1109,11 @@ function setState(state) {
             }
 
 
-            line1.textContent = "";
-            line2.textContent = "";
+            line1.textContent =
+                "";
+
+            line2.textContent =
+                "";
 
             break;
 
@@ -1071,6 +1234,11 @@ function setState(state) {
         ================================================= */
 
 
+        /* =================================================
+           蓝牙传输
+           0% → 65%
+        ================================================= */
+
         case "bleTransfer":
 
             line1.textContent =
@@ -1089,12 +1257,10 @@ function setState(state) {
             );
 
 
-            progressText.textContent =
-                "正在传输  65%";
-
-
-            progressFill.style.width =
-                "65%";
+            animateProgress(
+                65,
+                "正在传输"
+            );
 
             break;
 
@@ -1126,6 +1292,11 @@ function setState(state) {
 
 
 
+        /* =================================================
+           Wi-Fi传输
+           0% → 80%
+        ================================================= */
+
         case "wifiTransfer":
 
             line1.textContent =
@@ -1144,17 +1315,15 @@ function setState(state) {
             );
 
 
-            progressText.textContent =
-                "Wi-Fi高速传输  80%";
-
-
             progressFill.classList.add(
                 "cyan"
             );
 
 
-            progressFill.style.width =
-                "80%";
+            animateProgress(
+                80,
+                "Wi-Fi高速传输"
+            );
 
             break;
 
