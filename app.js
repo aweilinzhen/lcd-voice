@@ -5,10 +5,18 @@ const batteryText = document.getElementById("batteryText");
 const bluetoothIcon = document.getElementById("bluetoothIcon");
 const extraIcon = document.getElementById("extraIcon");
 
+const chargeDisplay = document.getElementById("chargeDisplay");
+const chargeBatteryFill = document.getElementById("chargeBatteryFill");
+const chargeBatteryValue = document.getElementById("chargeBatteryValue");
+
 const qrCode = document.getElementById("qrCode");
 const loadingIcon = document.getElementById("loadingIcon");
 const successIcon = document.getElementById("successIcon");
 const failIcon = document.getElementById("failIcon");
+
+const recordEndIcon = document.getElementById("recordEndIcon");
+const lcdRecordLight = document.getElementById("lcdRecordLight");
+
 const markIcon = document.getElementById("markIcon");
 const updateIcon = document.getElementById("updateIcon");
 
@@ -21,7 +29,9 @@ const progressArea = document.getElementById("progressArea");
 const progressText = document.getElementById("progressText");
 const progressFill = document.getElementById("progressFill");
 
+/* 实体LED */
 const led = document.getElementById("led");
+const ledArea = document.getElementById("ledArea");
 
 const lcd = document.querySelector(".lcd");
 
@@ -60,16 +70,19 @@ function resetLCD() {
     }
 
 
-    /* 清除录音横向布局 */
+    /* 清除特殊布局 */
 
     if (lcd) {
         lcd.classList.remove(
-            "recording-layout"
+            "recording-layout",
+            "system-error-layout"
         );
     }
 
 
-    /* 状态栏 */
+    /* =====================================================
+       状态栏
+    ====================================================== */
 
     statusBar.classList.remove("hidden");
 
@@ -83,7 +96,38 @@ function resetLCD() {
     extraIcon.classList.add("hidden");
 
 
-    /* 中央状态图标 */
+    /* =====================================================
+       充电状态
+    ====================================================== */
+
+    if (chargeDisplay) {
+
+        chargeDisplay.classList.add(
+            "hidden"
+        );
+
+        chargeDisplay.classList.remove(
+            "charging",
+            "charged"
+        );
+    }
+
+
+    if (chargeBatteryFill) {
+        chargeBatteryFill.style.width =
+            "0%";
+    }
+
+
+    if (chargeBatteryValue) {
+        chargeBatteryValue.textContent =
+            "";
+    }
+
+
+    /* =====================================================
+       中央状态图标
+    ====================================================== */
 
     qrCode.classList.add("hidden");
 
@@ -93,44 +137,78 @@ function resetLCD() {
 
     failIcon.classList.add("hidden");
 
+
+    /* 结束录音 */
+
+    if (recordEndIcon) {
+        recordEndIcon.classList.add(
+            "hidden"
+        );
+    }
+
+
+    /* LCD录音红点 */
+
+    if (lcdRecordLight) {
+        lcdRecordLight.classList.add(
+            "hidden"
+        );
+    }
+
+
     markIcon.classList.add("hidden");
 
     updateIcon.classList.add("hidden");
 
 
-    /* 波形 */
+    /* =====================================================
+       波形
+    ====================================================== */
 
     wave.classList.add("hidden");
 
 
-    /* 进度条 */
+    /* =====================================================
+       进度
+    ====================================================== */
 
-    progressArea.classList.add("hidden");
+    progressArea.classList.add(
+        "hidden"
+    );
 
     progressArea.classList.remove(
         "wifi-transfer-layout",
         "ble-transfer-layout"
     );
 
-    progressFill.classList.remove("cyan");
+    progressFill.classList.remove(
+        "cyan"
+    );
 
-    progressFill.style.width = "0%";
+    progressFill.style.width =
+        "0%";
 
-    progressText.textContent = "";
+    progressText.textContent =
+        "";
 
 
-    /* 充电动画 */
+    /* =====================================================
+       充电动画
+    ====================================================== */
 
     batteryFill.classList.remove(
         "charging-animation"
     );
 
 
-    /* LCD文字 */
+    /* =====================================================
+       LCD文字
+    ====================================================== */
 
     line1.textContent = "";
 
     line2.textContent = "";
+
 
     line1.classList.remove(
         "text-red",
@@ -139,6 +217,7 @@ function resetLCD() {
         "text-cyan",
         "text-green"
     );
+
 
     line2.classList.remove(
         "text-red",
@@ -149,14 +228,144 @@ function resetLCD() {
     );
 
 
-    /* LED */
+    /* =====================================================
+       实体LED
+    ====================================================== */
 
-    led.classList.remove("recording");
+    led.classList.remove(
+        "recording"
+    );
 
 
-    /* 默认电量 */
+    /*
+     * 默认恢复实体LED结构。
+     * 只有方案2会隐藏整个灯孔。
+     */
 
-    setBattery(85, "green");
+    if (ledArea) {
+        ledArea.classList.remove(
+            "led-area-hidden"
+        );
+    }
+
+
+    /* =====================================================
+       默认电量
+    ====================================================== */
+
+    setBattery(
+        85,
+        "green"
+    );
+}
+
+
+/* =========================================================
+   系统异常
+   无图标
+   第一行：异常原因
+   第二行：错误码
+========================================================= */
+
+function showSystemError(title, code) {
+
+    if (lcd) {
+        lcd.classList.add(
+            "system-error-layout"
+        );
+    }
+
+
+    /* 隐藏顶部状态 */
+
+    statusBar.classList.add(
+        "hidden"
+    );
+
+    batteryStatus.classList.add(
+        "hidden"
+    );
+
+    bluetoothIcon.classList.add(
+        "hidden"
+    );
+
+    extraIcon.classList.add(
+        "hidden"
+    );
+
+
+    /* 确保所有图标隐藏 */
+
+    qrCode.classList.add(
+        "hidden"
+    );
+
+    loadingIcon.classList.add(
+        "hidden"
+    );
+
+    successIcon.classList.add(
+        "hidden"
+    );
+
+    failIcon.classList.add(
+        "hidden"
+    );
+
+    markIcon.classList.add(
+        "hidden"
+    );
+
+    updateIcon.classList.add(
+        "hidden"
+    );
+
+
+    if (recordEndIcon) {
+        recordEndIcon.classList.add(
+            "hidden"
+        );
+    }
+
+
+    if (lcdRecordLight) {
+        lcdRecordLight.classList.add(
+            "hidden"
+        );
+    }
+
+
+    /* 隐藏波形 */
+
+    wave.classList.add(
+        "hidden"
+    );
+
+
+    /* 隐藏进度 */
+
+    progressArea.classList.add(
+        "hidden"
+    );
+
+
+    /* 显示错误 */
+
+    line1.textContent =
+        title;
+
+    line2.textContent =
+        code;
+
+
+    line1.classList.add(
+        "text-red"
+    );
+
+    line2.classList.add(
+        "text-red"
+    );
 }
 
 
@@ -168,33 +377,103 @@ function showNoDisplay() {
 
     if (lcd) {
         lcd.classList.remove(
-            "recording-layout"
+            "recording-layout",
+            "system-error-layout"
         );
     }
 
-    statusBar.classList.add("hidden");
 
-    batteryStatus.classList.add("hidden");
+    /* 状态栏 */
 
-    bluetoothIcon.classList.add("hidden");
+    statusBar.classList.add(
+        "hidden"
+    );
 
-    extraIcon.classList.add("hidden");
+    batteryStatus.classList.add(
+        "hidden"
+    );
 
-    qrCode.classList.add("hidden");
+    bluetoothIcon.classList.add(
+        "hidden"
+    );
 
-    loadingIcon.classList.add("hidden");
+    extraIcon.classList.add(
+        "hidden"
+    );
 
-    successIcon.classList.add("hidden");
 
-    failIcon.classList.add("hidden");
+    /* 充电 */
 
-    markIcon.classList.add("hidden");
+    if (chargeDisplay) {
 
-    updateIcon.classList.add("hidden");
+        chargeDisplay.classList.add(
+            "hidden"
+        );
 
-    wave.classList.add("hidden");
+        chargeDisplay.classList.remove(
+            "charging",
+            "charged"
+        );
+    }
 
-    progressArea.classList.add("hidden");
+
+    /* 图标 */
+
+    qrCode.classList.add(
+        "hidden"
+    );
+
+    loadingIcon.classList.add(
+        "hidden"
+    );
+
+    successIcon.classList.add(
+        "hidden"
+    );
+
+    failIcon.classList.add(
+        "hidden"
+    );
+
+
+    if (recordEndIcon) {
+        recordEndIcon.classList.add(
+            "hidden"
+        );
+    }
+
+
+    if (lcdRecordLight) {
+        lcdRecordLight.classList.add(
+            "hidden"
+        );
+    }
+
+
+    markIcon.classList.add(
+        "hidden"
+    );
+
+    updateIcon.classList.add(
+        "hidden"
+    );
+
+
+    /* 波形 */
+
+    wave.classList.add(
+        "hidden"
+    );
+
+
+    /* 进度 */
+
+    progressArea.classList.add(
+        "hidden"
+    );
+
+
+    /* 文字 */
 
     line1.textContent = "";
 
@@ -210,12 +489,6 @@ function showNoDisplay() {
 
 function showRecording() {
 
-    /*
-     * 新版横向布局：
-     *
-     * 录音中 | 动态波形 | 00:23:18
-     */
-
     if (lcd) {
         lcd.classList.add(
             "recording-layout"
@@ -225,31 +498,43 @@ function showRecording() {
 
     /* 顶部状态栏 */
 
-    statusBar.classList.remove("hidden");
+    statusBar.classList.remove(
+        "hidden"
+    );
 
-    batteryStatus.classList.remove("hidden");
+    batteryStatus.classList.remove(
+        "hidden"
+    );
 
-    bluetoothIcon.classList.remove("hidden");
+    bluetoothIcon.classList.remove(
+        "hidden"
+    );
 
 
     /* 动态波形 */
 
-    wave.classList.remove("hidden");
+    wave.classList.remove(
+        "hidden"
+    );
 
 
-    /* 左侧录音状态 */
+    /* 录音状态 */
 
-    line1.textContent = "录音中";
-
-
-    /* 右侧录音时间 */
-
-    line2.textContent = "00:23:18";
+    line1.textContent =
+        "";
 
 
-    /* 红色录音灯 */
+    /* 时间 */
 
-    led.classList.add("recording");
+    line2.textContent =
+        "00:23:18";
+
+
+    /* 实体LED */
+
+    led.classList.add(
+        "recording"
+    );
 }
 
 
@@ -261,6 +546,7 @@ function setState(state) {
 
     resetLCD();
 
+
     switch (state) {
 
 
@@ -269,49 +555,69 @@ function setState(state) {
         ================================================= */
 
 
-        /* 首次开机 */
-
         case "firstBoot":
 
-            statusBar.classList.add("hidden");
+            statusBar.classList.add(
+                "hidden"
+            );
 
-            batteryStatus.classList.add("hidden");
+            batteryStatus.classList.add(
+                "hidden"
+            );
 
-            bluetoothIcon.classList.add("hidden");
+            bluetoothIcon.classList.add(
+                "hidden"
+            );
 
-            qrCode.classList.remove("hidden");
+            qrCode.classList.remove(
+                "hidden"
+            );
 
-            line1.textContent = "请打开App连接设备";
+            line1.textContent =
+                "请打开App连接设备";
 
             break;
 
 
-        /* 连接中 */
 
         case "deviceConnecting":
 
-            batteryStatus.classList.add("hidden");
+            batteryStatus.classList.add(
+                "hidden"
+            );
 
-            bluetoothIcon.classList.add("hidden");
+            bluetoothIcon.classList.add(
+                "hidden"
+            );
 
-            loadingIcon.classList.remove("hidden");
+            loadingIcon.classList.remove(
+                "hidden"
+            );
 
-            line1.textContent = "连接中";
+            line1.textContent =
+                "连接中";
 
             break;
 
 
-        /* 连接成功 */
 
         case "deviceConnected":
 
-            batteryStatus.classList.add("hidden");
+            batteryStatus.classList.add(
+                "hidden"
+            );
 
-            bluetoothIcon.classList.add("hidden");
+            bluetoothIcon.classList.add(
+                "hidden"
+            );
 
-            successIcon.classList.remove("hidden");
+            successIcon.classList.remove(
+                "hidden"
+            );
 
-            line1.textContent = "连接成功";
+            line1.textContent =
+                "连接成功";
+
 
             stateTimer = setTimeout(
                 () => setState("idle"),
@@ -321,140 +627,23 @@ function setState(state) {
             break;
 
 
-        /* 连接失败 */
 
         case "deviceConnectFail":
 
-            batteryStatus.classList.add("hidden");
-
-            bluetoothIcon.classList.add("hidden");
-
-            failIcon.classList.remove("hidden");
-
-            line1.textContent = "连接失败";
-
-            line1.classList.add("text-red");
-
-            break;
-
-
-        /* 关机 */
-
-        case "shutdown":
-
-            line1.textContent = "正在关机中";
-
-            break;
-
-
-        /* =================================================
-           录音状态
-        ================================================= */
-
-
-        /* 待机 */
-
-        case "idle":
-
-            line1.textContent = "○";
-
-            line2.textContent = "就绪";
-
-            break;
-
-
-        /* 录音启动 */
-
-        case "recordStart":
-
-            showRecording();
-
-            stateTimer = setTimeout(
-                () => {
-
-                    showNoDisplay();
-
-                    led.classList.add(
-                        "recording"
-                    );
-
-                },
-                5000
-            );
-
-            break;
-
-
-        /* 录音中 */
-
-        case "recording":
-
-            showRecording();
-
-            stateTimer = setTimeout(
-                () => {
-
-                    showNoDisplay();
-
-                    led.classList.add(
-                        "recording"
-                    );
-
-                },
-                5000
-            );
-
-            break;
-
-
-        /* 暂停录音 */
-
-        case "recordPause":
-
-            line1.textContent = "暂停中";
-
-            line2.textContent = "00:23:18";
-
-            break;
-
-
-        /* 录音结束 */
-
-        case "recordEnd":
-
-            line1.textContent = "结束录音";
-
-            break;
-
-
-        /* 标记 */
-
-        case "mark":
-
-            markIcon.classList.remove(
+            batteryStatus.classList.add(
                 "hidden"
             );
 
-            line1.textContent = "已标记";
-
-            led.classList.add(
-                "recording"
+            bluetoothIcon.classList.add(
+                "hidden"
             );
-
-            break;
-
-
-        /* 录音失败 */
-
-        case "recordFail":
 
             failIcon.classList.remove(
                 "hidden"
             );
 
-            line1.textContent = "录音失败";
-
-            line2.textContent = "";
+            line1.textContent =
+                "连接失败";
 
             line1.classList.add(
                 "text-red"
@@ -463,12 +652,149 @@ function setState(state) {
             break;
 
 
+
+        case "shutdown":
+
+            line1.textContent =
+                "正在关机中";
+
+            break;
+
+
+
         /* =================================================
-           电量状态
+           录音状态
         ================================================= */
 
 
-        /* 低电量 */
+        case "idle":
+
+            line1.textContent =
+                "○";
+
+            line2.textContent =
+                "就绪";
+
+            break;
+
+
+
+        case "recordStart":
+
+            showRecording();
+
+
+            stateTimer = setTimeout(
+                () => {
+
+                    showNoDisplay();
+
+                    led.classList.add(
+                        "recording"
+                    );
+
+                },
+                5000
+            );
+
+            break;
+
+
+
+        case "recording":
+
+            showRecording();
+
+
+            stateTimer = setTimeout(
+                () => {
+
+                    showNoDisplay();
+
+                    led.classList.add(
+                        "recording"
+                    );
+
+                },
+                5000
+            );
+
+            break;
+
+
+
+        case "recordPause":
+
+            line1.textContent =
+                "暂停中";
+
+            line2.textContent =
+                "00:23:18";
+
+            break;
+
+
+
+        /* =================================================
+           录音结束
+        ================================================= */
+
+        case "recordEnd":
+
+            if (recordEndIcon) {
+                recordEndIcon.classList.remove(
+                    "hidden"
+                );
+            }
+
+            line1.textContent =
+                "结束录音";
+
+            break;
+
+
+
+        case "mark":
+
+            markIcon.classList.remove(
+                "hidden"
+            );
+
+            line1.textContent =
+                "已标记";
+
+            led.classList.add(
+                "recording"
+            );
+
+            break;
+
+
+
+        case "recordFail":
+
+            failIcon.classList.remove(
+                "hidden"
+            );
+
+            line1.textContent =
+                "录音失败";
+
+            line2.textContent =
+                "";
+
+            line1.classList.add(
+                "text-red"
+            );
+
+            break;
+
+
+
+        /* =================================================
+           电量
+        ================================================= */
+
 
         case "batteryLow":
 
@@ -487,7 +813,6 @@ function setState(state) {
             break;
 
 
-        /* 极低电量 */
 
         case "batteryCritical":
 
@@ -513,48 +838,173 @@ function setState(state) {
             break;
 
 
-        /* 充电中 */
+
+        /* =================================================
+           充电中
+
+           左上角小电池 + 电量：隐藏
+           中间大电池：保留
+           中间 65%：保留
+           “充电中”文字：隐藏
+        ================================================= */
 
         case "charging":
 
-            bluetoothIcon.classList.add(
+            /*
+             * 隐藏左上角小电池 + 百分比
+             */
+
+            batteryStatus.classList.add(
                 "hidden"
             );
 
-            setBattery(
-                65,
-                "green"
-            );
 
-            batteryFill.classList.add(
-                "charging-animation"
-            );
-
-            break;
-
-
-        /* 充满电 */
-
-        case "charged":
+            /*
+             * 保持原来的蓝牙逻辑
+             */
 
             bluetoothIcon.classList.add(
                 "hidden"
             );
 
-            setBattery(
-                100,
-                "green"
-            );
+
+            /*
+             * 显示中间大电池
+             */
+
+            if (chargeDisplay) {
+
+                chargeDisplay.classList.remove(
+                    "hidden"
+                );
+
+                chargeDisplay.classList.add(
+                    "charging"
+                );
+            }
+
+
+            /*
+             * 保留中间 65%
+             */
+
+            if (chargeBatteryValue) {
+
+                chargeBatteryValue.textContent =
+                    "65%";
+            }
+
+
+            /*
+             * 保留 65% 电池填充
+             */
+
+            if (chargeBatteryFill) {
+
+                chargeBatteryFill.style.width =
+                    "65%";
+            }
+
+
+            /*
+             * 不显示“充电中”等文字
+             */
+
+            line1.textContent =
+                "";
+
+            line2.textContent =
+                "";
 
             break;
+
 
 
         /* =================================================
-           蓝牙连接
+           充满电
+
+           左上角小电池 + 电量：隐藏
+           中间大电池：保留
+           中间 100%：保留
+           “已充满”文字：隐藏
         ================================================= */
 
+        case "charged":
 
-        /* 待连接 */
+            /*
+             * 隐藏左上角小电池 + 百分比
+             */
+
+            batteryStatus.classList.add(
+                "hidden"
+            );
+
+
+            /*
+             * 保持原来的蓝牙逻辑
+             */
+
+            bluetoothIcon.classList.add(
+                "hidden"
+            );
+
+
+            /*
+             * 显示中间大电池
+             */
+
+            if (chargeDisplay) {
+
+                chargeDisplay.classList.remove(
+                    "hidden"
+                );
+
+                chargeDisplay.classList.add(
+                    "charged"
+                );
+            }
+
+
+            /*
+             * 保留中间 100%
+             */
+
+            if (chargeBatteryValue) {
+
+                chargeBatteryValue.textContent =
+                    "100%";
+            }
+
+
+            /*
+             * 满电填充
+             */
+
+            if (chargeBatteryFill) {
+
+                chargeBatteryFill.style.width =
+                    "100%";
+            }
+
+
+            /*
+             * 不显示“已充满”等文字
+             */
+
+            line1.textContent =
+                "";
+
+            line2.textContent =
+                "";
+
+            break;
+
+
+
+        /* =================================================
+           蓝牙
+        ================================================= */
+
 
         case "btWaiting":
 
@@ -580,7 +1030,6 @@ function setState(state) {
             break;
 
 
-        /* 蓝牙连接中 */
 
         case "btConnecting":
 
@@ -602,7 +1051,6 @@ function setState(state) {
             break;
 
 
-        /* 蓝牙已连接 */
 
         case "btConnected":
 
@@ -621,6 +1069,7 @@ function setState(state) {
             line1.textContent =
                 "连接成功";
 
+
             stateTimer = setTimeout(
                 () => setState("idle"),
                 5000
@@ -629,7 +1078,6 @@ function setState(state) {
             break;
 
 
-        /* 蓝牙断开 */
 
         case "btDisconnected":
 
@@ -643,6 +1091,7 @@ function setState(state) {
             line1.classList.add(
                 "text-yellow"
             );
+
 
             stateTimer = setTimeout(
                 () => {
@@ -661,18 +1110,20 @@ function setState(state) {
             break;
 
 
+
         /* =================================================
            数据传输
         ================================================= */
 
 
-        /* 蓝牙传输 */
-
         case "bleTransfer":
 
-            line1.textContent = "";
+            line1.textContent =
+                "";
 
-            line2.textContent = "";
+            line2.textContent =
+                "";
+
 
             progressArea.classList.remove(
                 "hidden"
@@ -682,8 +1133,10 @@ function setState(state) {
                 "ble-transfer-layout"
             );
 
+
             progressText.textContent =
                 "正在传输  65%";
+
 
             progressFill.style.width =
                 "65%";
@@ -691,7 +1144,6 @@ function setState(state) {
             break;
 
 
-        /* Wi-Fi待连接 */
 
         case "wifiWaiting":
 
@@ -705,7 +1157,6 @@ function setState(state) {
             break;
 
 
-        /* Wi-Fi已连接 */
 
         case "wifiConnected":
 
@@ -719,13 +1170,15 @@ function setState(state) {
             break;
 
 
-        /* Wi-Fi传输 */
 
         case "wifiTransfer":
 
-            line1.textContent = "";
+            line1.textContent =
+                "";
 
-            line2.textContent = "";
+            line2.textContent =
+                "";
+
 
             progressArea.classList.remove(
                 "hidden"
@@ -735,12 +1188,15 @@ function setState(state) {
                 "wifi-transfer-layout"
             );
 
+
             progressText.textContent =
                 "Wi-Fi高速传输  80%";
+
 
             progressFill.classList.add(
                 "cyan"
             );
+
 
             progressFill.style.width =
                 "80%";
@@ -748,12 +1204,11 @@ function setState(state) {
             break;
 
 
+
         /* =================================================
-           存储状态
+           存储
         ================================================= */
 
-
-        /* 存储不足 */
 
         case "storageLow":
 
@@ -770,7 +1225,6 @@ function setState(state) {
             break;
 
 
-        /* 存储满 */
 
         case "storageFull":
 
@@ -791,31 +1245,80 @@ function setState(state) {
             break;
 
 
+
         /* =================================================
-           系统状态
+           系统状态 / 异常
         ================================================= */
 
 
-        /* 设备异常 */
+        /*
+         * E101
+         * 系统启动失败
+         */
 
-        case "systemError":
+        case "systemStartFail":
 
-            line1.textContent =
-                "设备异常";
-
-            line1.classList.add(
-                "text-red"
+            showSystemError(
+                "系统启动失败",
+                "E101"
             );
 
             break;
 
 
+
+        /*
+         * E201
+         * 麦克风异常
+         */
+
+        case "micError":
+
+            showSystemError(
+                "麦克风异常",
+                "E201"
+            );
+
+            break;
+
+
+
+        /*
+         * E301
+         * 存储读取失败
+         */
+
+        case "storageReadFail":
+
+            showSystemError(
+                "存储读取失败",
+                "E301"
+            );
+
+            break;
+
+
+
+        /*
+         * E602
+         * 充电异常
+         */
+
+        case "chargeError":
+
+            showSystemError(
+                "「错误原因」",
+                "「错误码」"
+            );
+
+            break;
+
+
+
         /* =================================================
-           OTA升级
+           OTA
         ================================================= */
 
-
-        /* 升级中 */
 
         case "updating":
 
@@ -831,16 +1334,20 @@ function setState(state) {
                 "hidden"
             );
 
+
             updateIcon.classList.remove(
                 "hidden"
             );
+
 
             progressArea.classList.remove(
                 "hidden"
             );
 
+
             progressText.textContent =
                 "升级中 65%";
+
 
             progressFill.style.width =
                 "65%";
@@ -848,7 +1355,6 @@ function setState(state) {
             break;
 
 
-        /* 升级失败 */
 
         case "updateFail":
 
@@ -864,14 +1370,17 @@ function setState(state) {
                 "hidden"
             );
 
+
             failIcon.classList.remove(
                 "hidden"
             );
 
+
             line1.textContent =
                 "升级失败";
 
-            line2.textContent = "";
+            line2.textContent =
+                "";
 
             line1.classList.add(
                 "text-red"
@@ -880,25 +1389,114 @@ function setState(state) {
             break;
 
 
+
         /* =================================================
            LED状态
         ================================================= */
 
 
-        /* 录音红灯 */
+        /* =================================================
+           方案1 · LED录音灯
+
+           LCD：黑屏
+           实体LED：显示
+           实体LED：亮红灯
+        ================================================= */
 
         case "ledRecording":
 
+            showNoDisplay();
+
+
             /*
-             * LCD完全黑屏
-             * 只保留右侧红色LED
+             * 确保实体LED结构显示
              */
 
-            showNoDisplay();
+            if (ledArea) {
+
+                ledArea.classList.remove(
+                    "led-area-hidden"
+                );
+            }
+
+
+            /*
+             * 打开实体红灯
+             */
 
             led.classList.add(
                 "recording"
             );
+
+
+            /*
+             * LCD红点关闭
+             */
+
+            if (lcdRecordLight) {
+
+                lcdRecordLight.classList.add(
+                    "hidden"
+                );
+            }
+
+            break;
+
+
+
+        /* =================================================
+           方案2 · LCD录音灯
+
+           实体LED：整个隐藏
+           LCD：黑屏
+           LCD中央：小红点
+        ================================================= */
+
+        case "lcdRecordingLight":
+
+            /*
+             * LCD先完全清空
+             */
+
+            showNoDisplay();
+
+
+            /*
+             * 关闭实体LED
+             */
+
+            led.classList.remove(
+                "recording"
+            );
+
+
+            /*
+             * 隐藏整个实体LED区域
+             *
+             * 包括：
+             * LED灯
+             * LED灯孔
+             * LED外圈
+             */
+
+            if (ledArea) {
+
+                ledArea.classList.add(
+                    "led-area-hidden"
+                );
+            }
+
+
+            /*
+             * LCD中央显示小红点
+             */
+
+            if (lcdRecordLight) {
+
+                lcdRecordLight.classList.remove(
+                    "hidden"
+                );
+            }
 
             break;
 
@@ -909,12 +1507,12 @@ function setState(state) {
 
 /* =========================================================
    右侧状态按钮
-   Hover + 点击后持续选中
 ========================================================= */
 
 const stateButtons = document.querySelectorAll(
     "button[data-state]"
 );
+
 
 stateButtons.forEach(button => {
 
@@ -922,9 +1520,8 @@ stateButtons.forEach(button => {
         "click",
         () => {
 
-            /*
-             * 清除所有按钮选中状态
-             */
+
+            /* 清除选中 */
 
             stateButtons.forEach(item => {
 
@@ -935,18 +1532,14 @@ stateButtons.forEach(button => {
             });
 
 
-            /*
-             * 当前按钮保持选中
-             */
+            /* 当前按钮选中 */
 
             button.classList.add(
                 "active"
             );
 
 
-            /*
-             * 切换 LCD 状态
-             */
+            /* 切换状态 */
 
             setState(
                 button.dataset.state

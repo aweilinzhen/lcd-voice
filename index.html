@@ -102,6 +102,19 @@
                             </div>
 
 
+                            <!-- =========================
+                                 结束录音
+                            ========================== -->
+                            <div
+                                id="recordEndIcon"
+                                class="record-end-icon hidden"
+                                aria-hidden="true">
+
+                                <span></span>
+
+                            </div>
+
+
                             <!-- 标记 -->
                             <div
                                 id="markIcon"
@@ -119,9 +132,24 @@
 
 
                             <!-- =========================
+                                 方案2：
+                                 LCD中央录音灯
+                            ========================== -->
+                            <div
+                                id="lcdRecordLight"
+                                class="lcd-record-light hidden"
+                                aria-hidden="true">
+                            </div>
+
+
+                            <!-- =========================
                                  录音动态点阵
                             ========================== -->
-                            <div id="wave" class="wave dot-wave hidden" aria-hidden="true">
+                            <div
+                                id="wave"
+                                class="wave dot-wave hidden"
+                                aria-hidden="true">
+
                                 <span class="record-dot" style="--i:0"></span>
                                 <span class="record-dot" style="--i:1"></span>
                                 <span class="record-dot" style="--i:2"></span>
@@ -147,6 +175,33 @@
                                 <span class="record-dot" style="--i:22"></span>
                                 <span class="record-dot" style="--i:23"></span>
                                 <span class="record-dot" style="--i:24"></span>
+
+                            </div>
+
+
+                            <!-- =========================
+                                 充电状态大电池
+                            ========================== -->
+                            <div
+                                id="chargeDisplay"
+                                class="charge-display hidden"
+                                aria-hidden="true">
+
+                                <div class="charge-battery-large">
+
+                                    <div
+                                        id="chargeBatteryFill"
+                                        class="charge-battery-large-fill">
+                                    </div>
+
+                                    <span
+                                        id="chargeBatteryValue"
+                                        class="charge-battery-value">
+                                        65%
+                                    </span>
+
+                                </div>
+
                             </div>
 
 
@@ -190,8 +245,12 @@
                     </div>
 
 
-                    <!-- LED -->
-                    <div class="led-area">
+                    <!-- =========================
+                         机身实体LED
+                    ========================== -->
+                    <div
+                        id="ledArea"
+                        class="led-area">
 
                         <div class="led-ring">
 
@@ -247,13 +306,24 @@
                         <div class="control-icon device-icon">
 
                             <svg viewBox="0 0 24 24">
-                                <circle cx="12" cy="12" r="6"></circle>
-                                <circle cx="12" cy="12" r="9"></circle>
+                                <circle
+                                    cx="12"
+                                    cy="12"
+                                    r="6">
+                                </circle>
+
+                                <circle
+                                    cx="12"
+                                    cy="12"
+                                    r="9">
+                                </circle>
                             </svg>
 
                         </div>
 
-                        <h2>设备状态</h2>
+                        <h2>
+                            设备状态
+                        </h2>
 
                     </div>
 
@@ -304,15 +374,25 @@
                                     rx="4">
                                 </rect>
 
-                                <path d="M5 11v1a7 7 0 0 0 14 0v-1"></path>
-                                <path d="M12 19v3"></path>
-                                <path d="M9 22h6"></path>
+                                <path
+                                    d="M5 11v1a7 7 0 0 0 14 0v-1">
+                                </path>
+
+                                <path
+                                    d="M12 19v3">
+                                </path>
+
+                                <path
+                                    d="M9 22h6">
+                                </path>
 
                             </svg>
 
                         </div>
 
-                        <h2>录音状态</h2>
+                        <h2>
+                            录音状态
+                        </h2>
 
                     </div>
 
@@ -358,12 +438,16 @@
                         <div class="control-icon battery-icon">
 
                             <svg viewBox="0 0 24 24">
-                                <path d="M13 2 6 13h6l-1 9 7-12h-6z"></path>
+                                <path
+                                    d="M13 2 6 13h6l-1 9 7-12h-6z">
+                                </path>
                             </svg>
 
                         </div>
 
-                        <h2>电量显示</h2>
+                        <h2>
+                            电量显示
+                        </h2>
 
                     </div>
 
@@ -397,12 +481,16 @@
                         <div class="control-icon bluetooth-control-icon">
 
                             <svg viewBox="0 0 24 24">
-                                <path d="M7 7l10 10-5 4V3l5 4L7 17"></path>
+                                <path
+                                    d="M7 7l10 10-5 4V3l5 4L7 17">
+                                </path>
                             </svg>
 
                         </div>
 
-                        <h2>蓝牙连接</h2>
+                        <h2>
+                            蓝牙连接
+                        </h2>
 
                     </div>
 
@@ -440,15 +528,30 @@
                         <div class="control-icon transfer-icon">
 
                             <svg viewBox="0 0 24 24">
-                                <path d="M8 3v16"></path>
-                                <path d="m4 7 4-4 4 4"></path>
-                                <path d="M16 21V5"></path>
-                                <path d="m12 17 4 4 4-4"></path>
+
+                                <path
+                                    d="M8 3v16">
+                                </path>
+
+                                <path
+                                    d="m4 7 4-4 4 4">
+                                </path>
+
+                                <path
+                                    d="M16 21V5">
+                                </path>
+
+                                <path
+                                    d="m12 17 4 4 4-4">
+                                </path>
+
                             </svg>
 
                         </div>
 
-                        <h2>数据传输状态</h2>
+                        <h2>
+                            数据传输状态
+                        </h2>
 
                     </div>
 
@@ -486,14 +589,29 @@
                         <div class="control-icon storage-icon">
 
                             <svg viewBox="0 0 24 24">
-                                <ellipse cx="12" cy="5" rx="7" ry="3"></ellipse>
-                                <path d="M5 5v6c0 1.7 3.1 3 7 3s7-1.3 7-3V5"></path>
-                                <path d="M5 11v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"></path>
+
+                                <ellipse
+                                    cx="12"
+                                    cy="5"
+                                    rx="7"
+                                    ry="3">
+                                </ellipse>
+
+                                <path
+                                    d="M5 5v6c0 1.7 3.1 3 7 3s7-1.3 7-3V5">
+                                </path>
+
+                                <path
+                                    d="M5 11v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6">
+                                </path>
+
                             </svg>
 
                         </div>
 
-                        <h2>存储状态</h2>
+                        <h2>
+                            存储状态
+                        </h2>
 
                     </div>
 
@@ -514,39 +632,6 @@
 
 
                 <!-- =========================
-                     系统状态
-                ========================== -->
-                <div class="control-group">
-
-                    <div class="control-title">
-
-                        <div class="control-icon system-icon">
-
-                            <svg viewBox="0 0 24 24">
-                                <path d="M12 3 2.8 20h18.4z"></path>
-                                <path d="M12 9v5"></path>
-                                <path d="M12 17.2v.2"></path>
-                            </svg>
-
-                        </div>
-
-                        <h2>系统状态</h2>
-
-                    </div>
-
-
-                    <div class="button-grid">
-
-                        <button data-state="systemError">
-                            设备异常
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-                <!-- =========================
                      OTA升级
                 ========================== -->
                 <div class="control-group">
@@ -556,14 +641,26 @@
                         <div class="control-icon ota-icon">
 
                             <svg viewBox="0 0 24 24">
-                                <path d="M7 18h10a4 4 0 0 0 .5-8A6 6 0 0 0 6 8.5 4.5 4.5 0 0 0 7 18z"></path>
-                                <path d="M12 17V9"></path>
-                                <path d="m9 12 3-3 3 3"></path>
+
+                                <path
+                                    d="M7 18h10a4 4 0 0 0 .5-8A6 6 0 0 0 6 8.5 4.5 4.5 0 0 0 7 18z">
+                                </path>
+
+                                <path
+                                    d="M12 17V9">
+                                </path>
+
+                                <path
+                                    d="m9 12 3-3 3 3">
+                                </path>
+
                             </svg>
 
                         </div>
 
-                        <h2>OTA升级</h2>
+                        <h2>
+                            OTA升级
+                        </h2>
 
                     </div>
 
@@ -613,7 +710,9 @@
 
                         </div>
 
-                        <h2>LED状态</h2>
+                        <h2>
+                            LED状态
+                        </h2>
 
                     </div>
 
@@ -621,7 +720,65 @@
                     <div class="button-grid">
 
                         <button data-state="ledRecording">
-                            录音红灯
+                            方案1 · LED录音灯
+                        </button>
+
+                        <button data-state="lcdRecordingLight">
+                            方案2 · LCD录音灯
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================
+                     系统状态
+                     已移动到最下方
+                ========================== -->
+                <div class="control-group">
+
+                    <div class="control-title">
+
+                        <div class="control-icon system-icon">
+
+                            <svg viewBox="0 0 24 24">
+
+                                <path
+                                    d="M12 3 2.8 20h18.4z">
+                                </path>
+
+                                <path
+                                    d="M12 9v5">
+                                </path>
+
+                                <path
+                                    d="M12 17.2v.2">
+                                </path>
+
+                            </svg>
+
+                        </div>
+
+                        <h2>
+                            系统状态
+                        </h2>
+
+                    </div>
+
+
+                    <div class="button-grid">
+
+                        <button data-state="micError">
+                            麦克风异常 E201
+                        </button>
+
+                        <button data-state="storageReadFail">
+                            存储读取失败 E301
+                        </button>
+
+                        <button data-state="chargeError">
+                            规则说明
                         </button>
 
                     </div>
