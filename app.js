@@ -14,6 +14,9 @@ const loadingIcon = document.getElementById("loadingIcon");
 const successIcon = document.getElementById("successIcon");
 const failIcon = document.getElementById("failIcon");
 
+/* 系统异常统一图标 */
+const systemErrorIcon = document.getElementById("systemErrorIcon");
+
 const recordEndIcon = document.getElementById("recordEndIcon");
 const lcdRecordLight = document.getElementById("lcdRecordLight");
 
@@ -138,6 +141,15 @@ function resetLCD() {
     failIcon.classList.add("hidden");
 
 
+    /* 系统异常图标 */
+
+    if (systemErrorIcon) {
+        systemErrorIcon.classList.add(
+            "hidden"
+        );
+    }
+
+
     /* 结束录音 */
 
     if (recordEndIcon) {
@@ -237,11 +249,6 @@ function resetLCD() {
     );
 
 
-    /*
-     * 默认恢复实体LED结构。
-     * 只有方案2会隐藏整个灯孔。
-     */
-
     if (ledArea) {
         ledArea.classList.remove(
             "led-area-hidden"
@@ -262,9 +269,9 @@ function resetLCD() {
 
 /* =========================================================
    系统异常
-   无图标
-   第一行：异常原因
-   第二行：错误码
+   左侧：统一警告图标
+   右侧第一行：错误原因
+   右侧第二行：错误码
 ========================================================= */
 
 function showSystemError(title, code) {
@@ -295,7 +302,7 @@ function showSystemError(title, code) {
     );
 
 
-    /* 确保所有图标隐藏 */
+    /* 隐藏其他图标 */
 
     qrCode.classList.add(
         "hidden"
@@ -336,6 +343,15 @@ function showSystemError(title, code) {
     }
 
 
+    /* 显示统一系统异常图标 */
+
+    if (systemErrorIcon) {
+        systemErrorIcon.classList.remove(
+            "hidden"
+        );
+    }
+
+
     /* 隐藏波形 */
 
     wave.classList.add(
@@ -350,21 +366,34 @@ function showSystemError(title, code) {
     );
 
 
-    /* 显示错误 */
+    /* 错误原因 */
 
     line1.textContent =
         title;
+
+
+    /* 错误码 */
 
     line2.textContent =
         code;
 
 
-    line1.classList.add(
-        "text-red"
+    /* 系统异常统一使用白色 */
+
+    line1.classList.remove(
+        "text-red",
+        "text-yellow",
+        "text-blue",
+        "text-cyan",
+        "text-green"
     );
 
-    line2.classList.add(
-        "text-red"
+    line2.classList.remove(
+        "text-red",
+        "text-yellow",
+        "text-blue",
+        "text-cyan",
+        "text-green"
     );
 }
 
@@ -434,6 +463,13 @@ function showNoDisplay() {
     failIcon.classList.add(
         "hidden"
     );
+
+
+    if (systemErrorIcon) {
+        systemErrorIcon.classList.add(
+            "hidden"
+        );
+    }
 
 
     if (recordEndIcon) {
@@ -628,25 +664,15 @@ function setState(state) {
 
 
 
+        /* =================================================
+           E402 · 连接失败
+        ================================================= */
+
         case "deviceConnectFail":
 
-            batteryStatus.classList.add(
-                "hidden"
-            );
-
-            bluetoothIcon.classList.add(
-                "hidden"
-            );
-
-            failIcon.classList.remove(
-                "hidden"
-            );
-
-            line1.textContent =
-                "连接失败";
-
-            line1.classList.add(
-                "text-red"
+            showSystemError(
+                "连接失败",
+                "E402"
             );
 
             break;
@@ -771,20 +797,15 @@ function setState(state) {
 
 
 
+        /* =================================================
+           E202 · 录音失败
+        ================================================= */
+
         case "recordFail":
 
-            failIcon.classList.remove(
-                "hidden"
-            );
-
-            line1.textContent =
-                "录音失败";
-
-            line2.textContent =
-                "";
-
-            line1.classList.add(
-                "text-red"
+            showSystemError(
+                "录音失败",
+                "E202"
             );
 
             break;
@@ -841,36 +862,18 @@ function setState(state) {
 
         /* =================================================
            充电中
-
-           左上角小电池 + 电量：隐藏
-           中间大电池：保留
-           中间 65%：保留
-           “充电中”文字：隐藏
         ================================================= */
 
         case "charging":
-
-            /*
-             * 隐藏左上角小电池 + 百分比
-             */
 
             batteryStatus.classList.add(
                 "hidden"
             );
 
-
-            /*
-             * 保持原来的蓝牙逻辑
-             */
-
             bluetoothIcon.classList.add(
                 "hidden"
             );
 
-
-            /*
-             * 显示中间大电池
-             */
 
             if (chargeDisplay) {
 
@@ -884,20 +887,12 @@ function setState(state) {
             }
 
 
-            /*
-             * 保留中间 65%
-             */
-
             if (chargeBatteryValue) {
 
                 chargeBatteryValue.textContent =
                     "65%";
             }
 
-
-            /*
-             * 保留 65% 电池填充
-             */
 
             if (chargeBatteryFill) {
 
@@ -906,15 +901,8 @@ function setState(state) {
             }
 
 
-            /*
-             * 不显示“充电中”等文字
-             */
-
-            line1.textContent =
-                "";
-
-            line2.textContent =
-                "";
+            line1.textContent = "";
+            line2.textContent = "";
 
             break;
 
@@ -922,36 +910,18 @@ function setState(state) {
 
         /* =================================================
            充满电
-
-           左上角小电池 + 电量：隐藏
-           中间大电池：保留
-           中间 100%：保留
-           “已充满”文字：隐藏
         ================================================= */
 
         case "charged":
-
-            /*
-             * 隐藏左上角小电池 + 百分比
-             */
 
             batteryStatus.classList.add(
                 "hidden"
             );
 
-
-            /*
-             * 保持原来的蓝牙逻辑
-             */
-
             bluetoothIcon.classList.add(
                 "hidden"
             );
 
-
-            /*
-             * 显示中间大电池
-             */
 
             if (chargeDisplay) {
 
@@ -965,20 +935,12 @@ function setState(state) {
             }
 
 
-            /*
-             * 保留中间 100%
-             */
-
             if (chargeBatteryValue) {
 
                 chargeBatteryValue.textContent =
                     "100%";
             }
 
-
-            /*
-             * 满电填充
-             */
 
             if (chargeBatteryFill) {
 
@@ -987,15 +949,8 @@ function setState(state) {
             }
 
 
-            /*
-             * 不显示“已充满”等文字
-             */
-
-            line1.textContent =
-                "";
-
-            line2.textContent =
-                "";
+            line1.textContent = "";
+            line2.textContent = "";
 
             break;
 
@@ -1251,11 +1206,6 @@ function setState(state) {
         ================================================= */
 
 
-        /*
-         * E101
-         * 系统启动失败
-         */
-
         case "systemStartFail":
 
             showSystemError(
@@ -1266,11 +1216,6 @@ function setState(state) {
             break;
 
 
-
-        /*
-         * E201
-         * 麦克风异常
-         */
 
         case "micError":
 
@@ -1283,11 +1228,6 @@ function setState(state) {
 
 
 
-        /*
-         * E301
-         * 存储读取失败
-         */
-
         case "storageReadFail":
 
             showSystemError(
@@ -1299,10 +1239,9 @@ function setState(state) {
 
 
 
-        /*
-         * E602
-         * 充电异常
-         */
+        /* =================================================
+           规则说明
+        ================================================= */
 
         case "chargeError":
 
@@ -1356,34 +1295,15 @@ function setState(state) {
 
 
 
+        /* =================================================
+           E701 · 升级失败
+        ================================================= */
+
         case "updateFail":
 
-            statusBar.classList.add(
-                "hidden"
-            );
-
-            batteryStatus.classList.add(
-                "hidden"
-            );
-
-            bluetoothIcon.classList.add(
-                "hidden"
-            );
-
-
-            failIcon.classList.remove(
-                "hidden"
-            );
-
-
-            line1.textContent =
-                "升级失败";
-
-            line2.textContent =
-                "";
-
-            line1.classList.add(
-                "text-red"
+            showSystemError(
+                "升级失败",
+                "E701"
             );
 
             break;
@@ -1397,20 +1317,12 @@ function setState(state) {
 
         /* =================================================
            方案1 · LED录音灯
-
-           LCD：黑屏
-           实体LED：显示
-           实体LED：亮红灯
         ================================================= */
 
         case "ledRecording":
 
             showNoDisplay();
 
-
-            /*
-             * 确保实体LED结构显示
-             */
 
             if (ledArea) {
 
@@ -1420,18 +1332,10 @@ function setState(state) {
             }
 
 
-            /*
-             * 打开实体红灯
-             */
-
             led.classList.add(
                 "recording"
             );
 
-
-            /*
-             * LCD红点关闭
-             */
 
             if (lcdRecordLight) {
 
@@ -1446,38 +1350,17 @@ function setState(state) {
 
         /* =================================================
            方案2 · LCD录音灯
-
-           实体LED：整个隐藏
-           LCD：黑屏
-           LCD中央：小红点
         ================================================= */
 
         case "lcdRecordingLight":
 
-            /*
-             * LCD先完全清空
-             */
-
             showNoDisplay();
 
-
-            /*
-             * 关闭实体LED
-             */
 
             led.classList.remove(
                 "recording"
             );
 
-
-            /*
-             * 隐藏整个实体LED区域
-             *
-             * 包括：
-             * LED灯
-             * LED灯孔
-             * LED外圈
-             */
 
             if (ledArea) {
 
@@ -1486,10 +1369,6 @@ function setState(state) {
                 );
             }
 
-
-            /*
-             * LCD中央显示小红点
-             */
 
             if (lcdRecordLight) {
 

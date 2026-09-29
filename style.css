@@ -6931,3 +6931,287 @@ button:focus-visible {
         font-weight: 600 !important;
     }
 }
+
+/* =========================================================
+   系统状态 / 系统异常
+   统一样式
+   左侧：警告图标
+   右侧：错误原因 + 错误码
+========================================================= */
+
+
+/* ---------------------------------------------------------
+   系统异常整体布局
+--------------------------------------------------------- */
+
+.lcd.system-error-layout {
+    position: relative;
+}
+
+
+/* ---------------------------------------------------------
+   左侧统一警告图标
+--------------------------------------------------------- */
+
+.lcd.system-error-layout .system-error-icon {
+    position: absolute !important;
+
+    left: 72px !important;
+    top: 50% !important;
+
+    width: 26px !important;
+    height: 26px !important;
+
+    margin: 0 !important;
+
+    transform: translateY(-50%) !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    opacity: 1 !important;
+
+    z-index: 20 !important;
+}
+
+
+/* hidden 状态 */
+
+.lcd.system-error-layout .system-error-icon.hidden {
+    display: none !important;
+}
+
+
+/* ---------------------------------------------------------
+   警告图标 SVG
+--------------------------------------------------------- */
+
+.lcd.system-error-layout .system-error-icon svg {
+    display: block !important;
+
+    width: 26px !important;
+    height: 26px !important;
+
+    overflow: visible !important;
+
+    fill: none !important;
+
+    stroke: #ffffff !important;
+    stroke-width: 1.6 !important;
+
+    stroke-linecap: round !important;
+    stroke-linejoin: round !important;
+}
+
+
+/* ---------------------------------------------------------
+   第一行：错误原因
+--------------------------------------------------------- */
+
+.lcd.system-error-layout .line-main {
+    position: absolute !important;
+
+    left: 112px !important;
+    top: 43% !important;
+
+    width: 150px !important;
+    max-width: 150px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    transform: translateY(-50%) !important;
+
+    text-align: left !important;
+
+    color: #ffffff !important;
+
+    font-size: 15px !important;
+    font-weight: 500 !important;
+
+    line-height: 20px !important;
+
+    letter-spacing: 0 !important;
+
+    white-space: nowrap !important;
+
+    opacity: 1 !important;
+
+    z-index: 10 !important;
+}
+
+
+/* ---------------------------------------------------------
+   第二行：错误码
+--------------------------------------------------------- */
+
+.lcd.system-error-layout .line-sub {
+    position: absolute !important;
+
+    left: 112px !important;
+    top: 62% !important;
+
+    width: 150px !important;
+    max-width: 150px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    transform: translateY(-50%) !important;
+
+    text-align: left !important;
+
+    color: rgba(
+        255,
+        255,
+        255,
+        0.68
+    ) !important;
+
+    font-size: 11px !important;
+    font-weight: 400 !important;
+
+    line-height: 16px !important;
+
+    letter-spacing: 0.4px !important;
+
+    white-space: nowrap !important;
+
+    opacity: 1 !important;
+
+    z-index: 10 !important;
+}
+
+
+/* ---------------------------------------------------------
+   系统异常状态下
+   强制隐藏原有失败图标
+--------------------------------------------------------- */
+
+.lcd.system-error-layout .fail-icon {
+    display: none !important;
+}
+
+
+/* ---------------------------------------------------------
+   系统异常状态下
+   隐藏其他中央图标
+--------------------------------------------------------- */
+
+.lcd.system-error-layout .qr-code,
+.lcd.system-error-layout .loading-icon,
+.lcd.system-error-layout .success-icon,
+.lcd.system-error-layout .mark-icon,
+.lcd.system-error-layout .update-icon,
+.lcd.system-error-layout .record-end-icon,
+.lcd.system-error-layout .lcd-record-light {
+    display: none !important;
+}
+
+
+/* ---------------------------------------------------------
+   系统异常状态下隐藏波形
+--------------------------------------------------------- */
+
+.lcd.system-error-layout .wave {
+    display: none !important;
+}
+
+
+/* ---------------------------------------------------------
+   系统异常状态下隐藏进度条
+--------------------------------------------------------- */
+
+.lcd.system-error-layout .progress-area {
+    display: none !important;
+}
+
+
+/* =========================================================
+   手机 / 小屏适配
+========================================================= */
+
+@media (max-width: 620px) {
+
+    .lcd.system-error-layout .system-error-icon {
+
+        left: 68px !important;
+
+        width: 24px !important;
+        height: 24px !important;
+    }
+
+
+    .lcd.system-error-layout .system-error-icon svg {
+
+        width: 24px !important;
+        height: 24px !important;
+    }
+
+
+    .lcd.system-error-layout .line-main {
+
+        left: 105px !important;
+
+        width: 145px !important;
+        max-width: 145px !important;
+
+        font-size: 14px !important;
+    }
+
+
+    .lcd.system-error-layout .line-sub {
+
+        left: 105px !important;
+
+        width: 145px !important;
+        max-width: 145px !important;
+
+        font-size: 11px !important;
+    }
+
+}
+
+/* =========================================================
+   系统状态警告图标颜色
+========================================================= */
+
+.lcd.system-error-layout .system-error-icon svg {
+    fill: rgba(255, 174, 0, 0.10) !important;
+    stroke: #ffae00 !important;
+    stroke-width: 1.7 !important;
+
+    filter: drop-shadow(
+        0 0 4px rgba(255, 174, 0, 0.25)
+    ) !important;
+}
+
+/* =========================================================
+   系统异常 · 圆形警告图标
+========================================================= */
+
+.lcd.system-error-layout .system-error-icon svg {
+    width: 26px !important;
+    height: 26px !important;
+
+    fill: none !important;
+
+    stroke: #ffae00 !important;
+    stroke-width: 1.7 !important;
+
+    stroke-linecap: round !important;
+    stroke-linejoin: round !important;
+
+    filter: drop-shadow(
+        0 0 4px rgba(255, 174, 0, 0.25)
+    ) !important;
+}
+
+
+/* 感叹号下面的小圆点 */
+
+.lcd.system-error-layout .system-error-icon .system-error-dot {
+    fill: #ffae00 !important;
+    stroke: none !important;
+}
