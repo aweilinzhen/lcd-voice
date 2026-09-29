@@ -38,10 +38,18 @@ const ledArea = document.getElementById("ledArea");
 
 const lcd = document.querySelector(".lcd");
 
+
+/* =========================================================
+   定时器
+========================================================= */
+
 let stateTimer = null;
 
-/* 传输 / 升级进度动画 */
+/* 传输 / OTA 进度动画 */
 let progressTimer = null;
+
+/* 录音流动波形 */
+let recordingWaveTimer = null;
 
 
 /* =========================================================
@@ -70,18 +78,16 @@ function setBattery(percent, color = "green") {
 
 function animateProgress(target, label) {
 
-    /* 停止旧动画 */
-
     if (progressTimer) {
+
         clearInterval(progressTimer);
+
         progressTimer = null;
     }
 
 
     let current = 0;
 
-
-    /* 从 0% 开始 */
 
     progressFill.style.width =
         "0%";
@@ -90,39 +96,25 @@ function animateProgress(target, label) {
         `${label}  0%`;
 
 
-    /*
-     * 每 38ms 增加 1%
-     *
-     * 65% ≈ 2.5秒
-     * 80% ≈ 3秒
-     */
-
     progressTimer = setInterval(
         () => {
 
             current += 1;
 
 
-            /* 防止超过目标值 */
-
             if (current > target) {
+
                 current = target;
             }
 
-
-            /* 更新进度条 */
 
             progressFill.style.width =
                 current + "%";
 
 
-            /* 更新百分比文字 */
-
             progressText.textContent =
                 `${label}  ${current}%`;
 
-
-            /* 到达目标值 */
 
             if (current >= target) {
 
@@ -140,30 +132,311 @@ function animateProgress(target, label) {
 
 
 /* =========================================================
+   停止录音流动波形
+========================================================= */
+
+function stopRecordingWave() {
+
+    if (recordingWaveTimer) {
+
+        clearInterval(
+            recordingWaveTimer
+        );
+
+        recordingWaveTimer = null;
+    }
+}
+
+
+/* =========================================================
+   录音流动波形
+
+   方向：
+   右侧产生新声音
+           ↓
+   · · ▏ │ ┃
+   ← ← ← ← ←
+
+   越往左移动
+   振幅越明显
+========================================================= */
+
+function startRecordingWave() {
+
+    stopRecordingWave();
+
+
+    const bars = document.querySelectorAll(
+        ".dot-wave .record-dot"
+    );
+
+
+    if (!bars.length) {
+
+        return;
+    }
+
+
+    /*
+     * 当前波形数据
+     *
+     * index 0  = 最左
+     * index 18 = 最右
+     */
+
+    let amplitudes = [
+
+        0.82,
+        0.68,
+        0.76,
+        0.58,
+        0.72,
+
+        0.52,
+        0.62,
+        0.46,
+        0.56,
+        0.42,
+
+        0.48,
+        0.36,
+        0.40,
+        0.30,
+        0.28,
+
+        0.22,
+        0.18,
+        0.14,
+        0.10
+
+    ];
+
+
+    /* =====================================================
+       绘制波形
+    ====================================================== */
+
+    function renderWave() {
+
+        bars.forEach(
+            (bar, index) => {
+
+                /* 只显示19根 */
+
+                if (index >= 19) {
+
+                    bar.style.display =
+                        "none";
+
+                    return;
+                }
+
+
+                bar.style.display =
+                    "block";
+
+
+                /*
+                 * 越靠左
+                 * 放大系数越大
+                 *
+                 * 左：
+                 * 1.30
+                 *
+                 * 右：
+                 * 0.35
+                 */
+
+                const position =
+                    1 - index / 18;
+
+
+                const gain =
+                    0.35 +
+                    position * 0.95;
+
+
+                const amplitude =
+                    amplitudes[index] || 0.1;
+
+
+                /*
+                 * 基础高度
+                 * +
+                 * 声音振幅
+                 */
+
+                let height =
+                    3 +
+                    amplitude *
+                    gain *
+                    28;
+
+
+                /* 最大高度 */
+
+                height = Math.min(
+                    31,
+                    height
+                );
+
+
+                /* 最小高度 */
+
+                height = Math.max(
+                    3,
+                    height
+                );
+
+
+                bar.style.height =
+                    height + "px";
+            }
+        );
+    }
+
+
+    /* 第一次绘制 */
+
+    renderWave();
+
+
+    /* =====================================================
+       波形流动
+    ====================================================== */
+
+    recordingWaveTimer = setInterval(
+        () => {
+
+            /*
+             * 删除最左边
+             *
+             * 相当于整条波形
+             * 向左移动一格
+             */
+
+            amplitudes.shift();
+
+
+            /*
+             * 右侧生成新的声音
+             */
+
+            let newAmplitude;
+
+
+            const random =
+                Math.random();
+
+
+            /*
+             * 模拟真实声音
+             *
+             * 大部分：
+             * 小 / 中振幅
+             *
+             * 偶尔：
+             * 较明显声音
+             */
+
+            if (random > 0.88) {
+
+                /* 较强声音 */
+
+                newAmplitude =
+                    0.55 +
+                    Math.random() * 0.25;
+
+            } else if (random > 0.62) {
+
+                /* 中等声音 */
+
+                newAmplitude =
+                    0.32 +
+                    Math.random() * 0.22;
+
+            } else if (random > 0.28) {
+
+                /* 普通声音 */
+
+                newAmplitude =
+                    0.16 +
+                    Math.random() * 0.18;
+
+            } else {
+
+                /* 安静 */
+
+                newAmplitude =
+                    0.06 +
+                    Math.random() * 0.10;
+            }
+
+
+            /*
+             * 从右侧加入
+             */
+
+            amplitudes.push(
+                newAmplitude
+            );
+
+
+            /*
+             * 重新绘制
+             */
+
+            renderWave();
+
+        },
+        105
+    );
+}
+
+
+/* =========================================================
    LCD 重置
 ========================================================= */
 
 function resetLCD() {
 
-    /* 停止状态计时 */
+    /* =====================================================
+       停止状态计时
+    ====================================================== */
 
     if (stateTimer) {
+
         clearTimeout(stateTimer);
+
         stateTimer = null;
     }
 
 
-    /* 停止进度动画 */
+    /* =====================================================
+       停止进度动画
+    ====================================================== */
 
     if (progressTimer) {
+
         clearInterval(progressTimer);
+
         progressTimer = null;
     }
 
 
-    /* 清除特殊布局 */
+    /* =====================================================
+       停止录音流动波形
+    ====================================================== */
+
+    stopRecordingWave();
+
+
+    /* =====================================================
+       清除特殊布局
+    ====================================================== */
 
     if (lcd) {
+
         lcd.classList.remove(
             "recording-layout",
             "system-error-layout"
@@ -194,7 +467,7 @@ function resetLCD() {
 
 
     /* =====================================================
-       充电状态
+       充电
     ====================================================== */
 
     if (chargeDisplay) {
@@ -225,7 +498,7 @@ function resetLCD() {
 
 
     /* =====================================================
-       中央状态图标
+       图标
     ====================================================== */
 
     qrCode.classList.add(
@@ -245,8 +518,6 @@ function resetLCD() {
     );
 
 
-    /* 系统异常统一图标 */
-
     if (systemErrorIcon) {
 
         systemErrorIcon.classList.add(
@@ -255,8 +526,6 @@ function resetLCD() {
     }
 
 
-    /* 结束录音 */
-
     if (recordEndIcon) {
 
         recordEndIcon.classList.add(
@@ -264,8 +533,6 @@ function resetLCD() {
         );
     }
 
-
-    /* LCD录音红点 */
 
     if (lcdRecordLight) {
 
@@ -318,7 +585,7 @@ function resetLCD() {
 
 
     /* =====================================================
-       充电动画
+       电池动画
     ====================================================== */
 
     batteryFill.classList.remove(
@@ -385,8 +652,6 @@ function resetLCD() {
 
 /* =========================================================
    系统异常
-   左侧：统一圆形警告图标
-   右侧：异常原因 + 错误码
 ========================================================= */
 
 function showSystemError(title, code) {
@@ -399,7 +664,7 @@ function showSystemError(title, code) {
     }
 
 
-    /* 隐藏顶部状态 */
+    /* 隐藏顶部 */
 
     statusBar.classList.add(
         "hidden"
@@ -461,7 +726,7 @@ function showSystemError(title, code) {
     }
 
 
-    /* 显示统一系统异常图标 */
+    /* 显示系统异常圆形图标 */
 
     if (systemErrorIcon) {
 
@@ -497,7 +762,7 @@ function showSystemError(title, code) {
         code;
 
 
-    /* 统一文字颜色 */
+    /* 文字 */
 
     line1.classList.remove(
         "text-red",
@@ -518,10 +783,15 @@ function showSystemError(title, code) {
 
 
 /* =========================================================
-   LCD完全熄屏
+   LCD 熄屏
 ========================================================= */
 
 function showNoDisplay() {
+
+    /* 停止波形 */
+
+    stopRecordingWave();
+
 
     if (lcd) {
 
@@ -659,7 +929,7 @@ function showRecording() {
     }
 
 
-    /* 顶部状态栏 */
+    /* 顶部状态 */
 
     statusBar.classList.remove(
         "hidden"
@@ -674,26 +944,28 @@ function showRecording() {
     );
 
 
-    /* 动态波形 */
+    /* 显示波形 */
 
     wave.classList.remove(
         "hidden"
     );
 
 
-    /* 录音状态 */
+    /* 启动实时流动波形 */
 
-    line1.textContent =
-        "";
+    startRecordingWave();
 
 
     /* 时间 */
+
+    line1.textContent =
+        "";
 
     line2.textContent =
         "00:23:18";
 
 
-    /* 实体LED */
+    /* 实体红灯 */
 
     led.classList.add(
         "recording"
@@ -791,10 +1063,6 @@ function setState(state) {
 
 
 
-        /* =================================================
-           E402 · 连接失败
-        ================================================= */
-
         case "deviceConnectFail":
 
             showSystemError(
@@ -888,10 +1156,6 @@ function setState(state) {
 
 
 
-        /* =================================================
-           录音结束
-        ================================================= */
-
         case "recordEnd":
 
             if (recordEndIcon) {
@@ -924,10 +1188,6 @@ function setState(state) {
             break;
 
 
-
-        /* =================================================
-           E202 · 录音失败
-        ================================================= */
 
         case "recordFail":
 
@@ -989,8 +1249,9 @@ function setState(state) {
 
 
         /* =================================================
-           充电中
+           充电
         ================================================= */
+
 
         case "charging":
 
@@ -1038,10 +1299,6 @@ function setState(state) {
             break;
 
 
-
-        /* =================================================
-           充满电
-        ================================================= */
 
         case "charged":
 
@@ -1205,10 +1462,7 @@ function setState(state) {
         ================================================= */
 
 
-        /* =================================================
-           蓝牙传输
-           0% → 65%
-        ================================================= */
+        /* 蓝牙传输 */
 
         case "bleTransfer":
 
@@ -1263,10 +1517,7 @@ function setState(state) {
 
 
 
-        /* =================================================
-           Wi-Fi传输
-           0% → 80%
-        ================================================= */
+        /* Wi-Fi传输 */
 
         case "wifiTransfer":
 
@@ -1342,7 +1593,7 @@ function setState(state) {
 
 
         /* =================================================
-           系统状态 / 异常
+           系统异常
         ================================================= */
 
 
@@ -1379,10 +1630,6 @@ function setState(state) {
 
 
 
-        /* =================================================
-           规则说明
-        ================================================= */
-
         case "chargeError":
 
             showSystemError(
@@ -1398,11 +1645,6 @@ function setState(state) {
            OTA升级
         ================================================= */
 
-
-        /* =================================================
-           升级中
-           0% → 65%
-        ================================================= */
 
         case "updating":
 
@@ -1438,10 +1680,6 @@ function setState(state) {
 
 
 
-        /* =================================================
-           E701 · 升级失败
-        ================================================= */
-
         case "updateFail":
 
             showSystemError(
@@ -1458,9 +1696,7 @@ function setState(state) {
         ================================================= */
 
 
-        /* =================================================
-           方案1 · LED录音灯
-        ================================================= */
+        /* 方案1 · 实体LED */
 
         case "ledRecording":
 
@@ -1491,9 +1727,7 @@ function setState(state) {
 
 
 
-        /* =================================================
-           方案2 · LCD录音灯
-        ================================================= */
+        /* 方案2 · LCD红点 */
 
         case "lcdRecordingLight":
 
@@ -1554,7 +1788,7 @@ stateButtons.forEach(button => {
             });
 
 
-            /* 当前按钮选中 */
+            /* 当前按钮 */
 
             button.classList.add(
                 "active"
