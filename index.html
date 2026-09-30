@@ -27,14 +27,13 @@
 
             <div class="prototype-area">
 
-                <div class="device">
+                    <div class="lcd">
 
-                    <!-- 装饰高光 -->
-                    <div class="device-highlight"></div>
-
-                    <div class="lcd-bezel">
-
-                        <div class="lcd">
+                            <!-- 录音熄屏模式的中央指示点 -->
+                            <span
+                                class="recording-offscreen-dot"
+                                aria-hidden="true">
+                            </span>
 
                             <!-- 顶部状态栏 -->
                             <div id="statusBar" class="status-bar">
@@ -72,9 +71,18 @@
                             <!-- 二维码 -->
                             <div
                                 id="qrCode"
-                                class="qr-code hidden">
+                                class="qr-code hidden"
+                                aria-label="连接设备二维码">
 
-                                <div class="qr-inner"></div>
+                                <img
+                                    id="connectQrImage"
+                                    class="qr-image"
+                                    src="./connect-qr.svg"
+                                    alt="">
+
+                                <span class="qr-caption">
+                                    请打开App连接设备
+                                </span>
 
                             </div>
 
@@ -106,35 +114,35 @@
                                  系统异常统一警告图标
                             ========================== -->
                             <div
-    id="systemErrorIcon"
-    class="system-error-icon hidden"
-    aria-hidden="true">
+                                id="systemErrorIcon"
+                                class="system-error-icon hidden"
+                                aria-hidden="true">
 
-    <svg viewBox="0 0 24 24">
+                                <svg viewBox="0 0 24 24">
 
-        <!-- 圆形 -->
-        <circle
-            cx="12"
-            cy="12"
-            r="9">
-        </circle>
+                                    <!-- 圆形 -->
+                                    <circle
+                                        cx="12"
+                                        cy="12"
+                                        r="9">
+                                    </circle>
 
-        <!-- 感叹号 -->
-        <path
-            d="M12 7.5v6">
-        </path>
+                                    <!-- 感叹号 -->
+                                    <path
+                                        d="M12 7.5v6">
+                                    </path>
 
-        <!-- 感叹号圆点 -->
-        <circle
-            cx="12"
-            cy="17"
-            r="0.8"
-            class="system-error-dot">
-        </circle>
+                                    <!-- 感叹号圆点 -->
+                                    <circle
+                                        cx="12"
+                                        cy="17"
+                                        r="0.8"
+                                        class="system-error-dot">
+                                    </circle>
 
-    </svg>
+                                </svg>
 
-</div>
+                            </div>
 
 
                             <!-- =========================
@@ -163,17 +171,6 @@
                                 id="updateIcon"
                                 class="update-icon hidden">
                                 ↑
-                            </div>
-
-
-                            <!-- =========================
-                                 方案2：
-                                 LCD中央录音灯
-                            ========================== -->
-                            <div
-                                id="lcdRecordLight"
-                                class="lcd-record-light hidden"
-                                aria-hidden="true">
                             </div>
 
 
@@ -275,31 +272,7 @@
 
                             </div>
 
-                        </div>
-
                     </div>
-
-
-                    <!-- =========================
-                         机身实体LED
-                    ========================== -->
-                    <div
-                        id="ledArea"
-                        class="led-area">
-
-                        <div class="led-ring">
-
-                            <div
-                                id="led"
-                                class="led">
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
 
                 <!-- =========================
                      原型说明
@@ -436,12 +409,12 @@
                             待机
                         </button>
 
-                        <button data-state="recordStart">
-                            录音启动
-                        </button>
-
                         <button data-state="recording">
                             录音中
+                        </button>
+
+                        <button data-state="recordingOffScreen">
+                            录音熄屏
                         </button>
 
                         <button data-state="recordEnd">
@@ -450,6 +423,10 @@
 
                         <button data-state="mark">
                             标记
+                        </button>
+
+                        <button data-state="mark2">
+                            标记2
                         </button>
 
                     </div>
@@ -702,58 +679,6 @@
 
                         <button data-state="updating">
                             升级中
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-                <!-- =========================
-                     LED状态
-                ========================== -->
-                <div class="control-group">
-
-                    <div class="control-title">
-
-                        <div class="control-icon led-control-icon">
-
-                            <svg viewBox="0 0 24 24">
-
-                                <circle
-                                    cx="12"
-                                    cy="12"
-                                    r="5">
-                                </circle>
-
-                                <path d="M12 2v2"></path>
-                                <path d="M12 20v2"></path>
-                                <path d="m4.9 4.9 1.4 1.4"></path>
-                                <path d="m17.7 17.7 1.4 1.4"></path>
-                                <path d="M2 12h2"></path>
-                                <path d="M20 12h2"></path>
-                                <path d="m4.9 19.1 1.4-1.4"></path>
-                                <path d="m17.7 6.3 1.4-1.4"></path>
-
-                            </svg>
-
-                        </div>
-
-                        <h2>
-                            LED状态
-                        </h2>
-
-                    </div>
-
-
-                    <div class="button-grid">
-
-                        <button data-state="ledRecording">
-                            方案1 · LED录音灯
-                        </button>
-
-                        <button data-state="lcdRecordingLight">
-                            方案2 · LCD录音灯
                         </button>
 
                     </div>

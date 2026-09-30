@@ -18,7 +18,6 @@ const failIcon = document.getElementById("failIcon");
 const systemErrorIcon = document.getElementById("systemErrorIcon");
 
 const recordEndIcon = document.getElementById("recordEndIcon");
-const lcdRecordLight = document.getElementById("lcdRecordLight");
 
 const markIcon = document.getElementById("markIcon");
 const updateIcon = document.getElementById("updateIcon");
@@ -31,10 +30,6 @@ const line2 = document.getElementById("line2");
 const progressArea = document.getElementById("progressArea");
 const progressText = document.getElementById("progressText");
 const progressFill = document.getElementById("progressFill");
-
-/* 实体LED */
-const led = document.getElementById("led");
-const ledArea = document.getElementById("ledArea");
 
 const lcd = document.querySelector(".lcd");
 
@@ -85,36 +80,28 @@ function animateProgress(target, label) {
         progressTimer = null;
     }
 
-
     let current = 0;
 
-
-    progressFill.style.width =
-        "0%";
+    progressFill.style.width = "0%";
 
     progressText.textContent =
         `${label}  0%`;
-
 
     progressTimer = setInterval(
         () => {
 
             current += 1;
 
-
             if (current > target) {
 
                 current = target;
             }
 
-
             progressFill.style.width =
                 current + "%";
 
-
             progressText.textContent =
                 `${label}  ${current}%`;
-
 
             if (current >= target) {
 
@@ -145,46 +132,148 @@ function stopRecordingWave() {
 
         recordingWaveTimer = null;
     }
+
 }
 
 
 /* =========================================================
    录音流动波形
+========================================================= */
 
-   方向：
-   右侧产生新声音
-           ↓
-   · · ▏ │ ┃
-   ← ← ← ← ←
+let recordingWaveBars = [];
+let recordingWaveAmplitudes = [];
 
-   越往左移动
-   振幅越明显
+
+/* 标记2直接呈现录音波形并强调中央柱，不切换右侧按钮状态。 */
+function triggerMarker2() {
+    console.log("triggerMarker2 running");
+
+    /* 将录音中的LCD显示效果直接提供给标记2按钮。 */
+    if (!lcd.classList.contains("recording-layout")) {
+        resetLCD();
+        showRecording();
+    } else {
+        lcd.classList.remove("recording-offscreen");
+        wave.classList.remove("hidden");
+    }
+
+    const allBars = wave
+        ? Array.from(wave.querySelectorAll(".record-dot"))
+        : [];
+    console.log("wave count", allBars.length);
+
+    const bars = allBars.slice(0, 19);
+
+    if (!bars.length) {
+        return;
+    }
+
+    bars.forEach(bar => bar.classList.remove("marker-active"));
+
+    const markerIndex = Math.floor(bars.length / 2);
+    const markerBar = bars[markerIndex];
+
+    void markerBar.offsetWidth;
+    markerBar.classList.add("marker-active");
+}
+
+
+/* =========================================================
+   绘制录音波形
+========================================================= */
+
+function renderRecordingWave() {
+
+    recordingWaveBars.forEach(
+        (bar, index) => {
+
+            /* 只显示19根 */
+
+            if (index >= 19) {
+
+                bar.style.display =
+                    "none";
+
+                bar.classList.remove("marker-active");
+
+                return;
+            }
+
+            bar.style.display =
+                "block";
+
+            /* =================================================
+               原录音波形高度
+            ================================================= */
+
+            const position =
+                1 - index / 18;
+
+            const gain =
+                0.35 +
+                position * 0.95;
+
+            const amplitude =
+                recordingWaveAmplitudes[
+                    index
+                ] || 0.1;
+
+            let height =
+                3 +
+                amplitude *
+                gain *
+                28;
+
+            height = Math.min(
+                31,
+                height
+            );
+
+            height = Math.max(
+                3,
+                height
+            );
+
+            bar.style.height =
+                height + "px";
+        }
+    );
+}
+
+
+/* =========================================================
+   开始录音流动波形
 ========================================================= */
 
 function startRecordingWave() {
 
     stopRecordingWave();
 
+    recordingWaveBars =
+        Array.from(
+            document.querySelectorAll(
+                ".dot-wave .record-dot"
+            )
+        );
 
-    const bars = document.querySelectorAll(
-        ".dot-wave .record-dot"
-    );
+    /* 普通录音波形初始化时清除上次标记2留下的颜色。 */
+    recordingWaveBars.forEach(bar => {
+        bar.classList.remove("marker-active");
+    });
 
-
-    if (!bars.length) {
+    if (
+        !recordingWaveBars.length
+    ) {
 
         return;
     }
 
 
-    /*
-     * 当前波形数据
-     *
-     * index 0  = 最左
-     * index 18 = 最右
-     */
+    /* =====================================================
+       原始录音波形
+    ====================================================== */
 
-    let amplitudes = [
+    recordingWaveAmplitudes = [
 
         0.82,
         0.68,
@@ -211,186 +300,86 @@ function startRecordingWave() {
 
     ];
 
+    /* 第一次绘制 */
+
+    renderRecordingWave();
+
 
     /* =====================================================
-       绘制波形
+       波形持续流动
     ====================================================== */
 
-    function renderWave() {
+    recordingWaveTimer =
+        setInterval(
+            () => {
 
-        bars.forEach(
-            (bar, index) => {
 
-                /* 只显示19根 */
+                /* 波形向左移动 */
 
-                if (index >= 19) {
+                recordingWaveAmplitudes.shift();
 
-                    bar.style.display =
-                        "none";
 
-                    return;
+                /* =================================================
+                   生成新的声音
+                ================================================= */
+
+                let newAmplitude;
+
+                const random =
+                    Math.random();
+
+
+                if (
+                    random > 0.88
+                ) {
+
+                    newAmplitude =
+                        0.55 +
+                        Math.random() *
+                        0.25;
+
+                } else if (
+                    random > 0.62
+                ) {
+
+                    newAmplitude =
+                        0.32 +
+                        Math.random() *
+                        0.22;
+
+                } else if (
+                    random > 0.28
+                ) {
+
+                    newAmplitude =
+                        0.16 +
+                        Math.random() *
+                        0.18;
+
+                } else {
+
+                    newAmplitude =
+                        0.06 +
+                        Math.random() *
+                        0.10;
                 }
 
 
-                bar.style.display =
-                    "block";
+                /* 新声音加入右侧 */
 
-
-                /*
-                 * 越靠左
-                 * 放大系数越大
-                 *
-                 * 左：
-                 * 1.30
-                 *
-                 * 右：
-                 * 0.35
-                 */
-
-                const position =
-                    1 - index / 18;
-
-
-                const gain =
-                    0.35 +
-                    position * 0.95;
-
-
-                const amplitude =
-                    amplitudes[index] || 0.1;
-
-
-                /*
-                 * 基础高度
-                 * +
-                 * 声音振幅
-                 */
-
-                let height =
-                    3 +
-                    amplitude *
-                    gain *
-                    28;
-
-
-                /* 最大高度 */
-
-                height = Math.min(
-                    31,
-                    height
+                recordingWaveAmplitudes.push(
+                    newAmplitude
                 );
 
 
-                /* 最小高度 */
+                /* 重新绘制 */
 
-                height = Math.max(
-                    3,
-                    height
-                );
+                renderRecordingWave();
 
+            },
 
-                bar.style.height =
-                    height + "px";
-            }
+            300
         );
-    }
-
-
-    /* 第一次绘制 */
-
-    renderWave();
-
-
-    /* =====================================================
-       波形流动
-    ====================================================== */
-
-    recordingWaveTimer = setInterval(
-        () => {
-
-            /*
-             * 删除最左边
-             *
-             * 相当于整条波形
-             * 向左移动一格
-             */
-
-            amplitudes.shift();
-
-
-            /*
-             * 右侧生成新的声音
-             */
-
-            let newAmplitude;
-
-
-            const random =
-                Math.random();
-
-
-            /*
-             * 模拟真实声音
-             *
-             * 大部分：
-             * 小 / 中振幅
-             *
-             * 偶尔：
-             * 较明显声音
-             */
-
-            if (random > 0.88) {
-
-                /* 较强声音 */
-
-                newAmplitude =
-                    0.55 +
-                    Math.random() * 0.25;
-
-            } else if (random > 0.62) {
-
-                /* 中等声音 */
-
-                newAmplitude =
-                    0.32 +
-                    Math.random() * 0.22;
-
-            } else if (random > 0.28) {
-
-                /* 普通声音 */
-
-                newAmplitude =
-                    0.16 +
-                    Math.random() * 0.18;
-
-            } else {
-
-                /* 安静 */
-
-                newAmplitude =
-                    0.06 +
-                    Math.random() * 0.10;
-            }
-
-
-            /*
-             * 从右侧加入
-             */
-
-            amplitudes.push(
-                newAmplitude
-            );
-
-
-            /*
-             * 重新绘制
-             */
-
-            renderWave();
-
-        },
-        105
-    );
 }
 
 
@@ -439,6 +428,8 @@ function resetLCD() {
 
         lcd.classList.remove(
             "recording-layout",
+            "recording-offscreen",
+            "connect-page",
             "system-error-layout"
         );
     }
@@ -534,14 +525,6 @@ function resetLCD() {
     }
 
 
-    if (lcdRecordLight) {
-
-        lcdRecordLight.classList.add(
-            "hidden"
-        );
-    }
-
-
     markIcon.classList.add(
         "hidden"
     );
@@ -623,23 +606,6 @@ function resetLCD() {
 
 
     /* =====================================================
-       实体LED
-    ====================================================== */
-
-    led.classList.remove(
-        "recording"
-    );
-
-
-    if (ledArea) {
-
-        ledArea.classList.remove(
-            "led-area-hidden"
-        );
-    }
-
-
-    /* =====================================================
        默认电量
     ====================================================== */
 
@@ -654,7 +620,10 @@ function resetLCD() {
    系统异常
 ========================================================= */
 
-function showSystemError(title, code) {
+function showSystemError(
+    title,
+    code
+) {
 
     if (lcd) {
 
@@ -713,14 +682,6 @@ function showSystemError(title, code) {
     if (recordEndIcon) {
 
         recordEndIcon.classList.add(
-            "hidden"
-        );
-    }
-
-
-    if (lcdRecordLight) {
-
-        lcdRecordLight.classList.add(
             "hidden"
         );
     }
@@ -871,14 +832,6 @@ function showNoDisplay() {
     }
 
 
-    if (lcdRecordLight) {
-
-        lcdRecordLight.classList.add(
-            "hidden"
-        );
-    }
-
-
     markIcon.classList.add(
         "hidden"
     );
@@ -915,9 +868,7 @@ function showNoDisplay() {
 }
 
 
-/* =========================================================
-   录音中
-========================================================= */
+/* LCD录音波形画面 */
 
 function showRecording() {
 
@@ -965,11 +916,22 @@ function showRecording() {
         "00:23:18";
 
 
-    /* 实体红灯 */
+}
 
-    led.classList.add(
-        "recording"
-    );
+
+/* 首次开机与待连接共用同一连接引导页面。 */
+function renderConnectPage({ mode }) {
+    lcd.classList.add("connect-page");
+    qrCode.dataset.mode = mode;
+
+    statusBar.classList.add("hidden");
+    batteryStatus.classList.add("hidden");
+    bluetoothIcon.classList.add("hidden");
+    extraIcon.classList.add("hidden");
+
+    qrCode.classList.remove("hidden");
+    line1.textContent = "";
+    line2.textContent = "";
 }
 
 
@@ -978,6 +940,26 @@ function showRecording() {
 ========================================================= */
 
 function setState(state) {
+
+    /* 录音熄屏只遮蔽LCD内容，保留录音波形更新。 */
+    if (state === "recordingOffScreen") {
+        if (!lcd.classList.contains("recording-layout") || !recordingWaveTimer) {
+            resetLCD();
+            showRecording();
+        }
+
+        lcd.classList.add("recording-offscreen");
+        return;
+    }
+
+    /* 从录音熄屏恢复录音显示时，保留正在滚动的波形。 */
+    if (
+        state === "recording" &&
+        lcd.classList.contains("recording-offscreen")
+    ) {
+        lcd.classList.remove("recording-offscreen");
+        return;
+    }
 
     resetLCD();
 
@@ -991,26 +973,7 @@ function setState(state) {
 
 
         case "firstBoot":
-
-            statusBar.classList.add(
-                "hidden"
-            );
-
-            batteryStatus.classList.add(
-                "hidden"
-            );
-
-            bluetoothIcon.classList.add(
-                "hidden"
-            );
-
-            qrCode.classList.remove(
-                "hidden"
-            );
-
-            line1.textContent =
-                "请打开App连接设备";
-
+            renderConnectPage({ mode: "firstBoot" });
             break;
 
 
@@ -1054,10 +1017,14 @@ function setState(state) {
                 "连接成功";
 
 
-            stateTimer = setTimeout(
-                () => setState("idle"),
-                5000
-            );
+            stateTimer =
+                setTimeout(
+                    () =>
+                        setState(
+                            "idle"
+                        ),
+                    5000
+                );
 
             break;
 
@@ -1099,47 +1066,9 @@ function setState(state) {
             break;
 
 
-
-        case "recordStart":
-
-            showRecording();
-
-
-            stateTimer = setTimeout(
-                () => {
-
-                    showNoDisplay();
-
-                    led.classList.add(
-                        "recording"
-                    );
-
-                },
-                5000
-            );
-
-            break;
-
-
-
         case "recording":
 
             showRecording();
-
-
-            stateTimer = setTimeout(
-                () => {
-
-                    showNoDisplay();
-
-                    led.classList.add(
-                        "recording"
-                    );
-
-                },
-                5000
-            );
-
             break;
 
 
@@ -1172,6 +1101,11 @@ function setState(state) {
 
 
 
+        /* =================================================
+           标记 · 原方案1
+           保持不变
+        ================================================= */
+
         case "mark":
 
             markIcon.classList.remove(
@@ -1180,10 +1114,6 @@ function setState(state) {
 
             line1.textContent =
                 "已标记";
-
-            led.classList.add(
-                "recording"
-            );
 
             break;
 
@@ -1353,26 +1283,7 @@ function setState(state) {
 
 
         case "btWaiting":
-
-            statusBar.classList.add(
-                "hidden"
-            );
-
-            batteryStatus.classList.add(
-                "hidden"
-            );
-
-            bluetoothIcon.classList.add(
-                "hidden"
-            );
-
-            qrCode.classList.remove(
-                "hidden"
-            );
-
-            line1.textContent =
-                "请打开App连接设备";
-
+            renderConnectPage({ mode: "waiting" });
             break;
 
 
@@ -1416,10 +1327,14 @@ function setState(state) {
                 "连接成功";
 
 
-            stateTimer = setTimeout(
-                () => setState("idle"),
-                5000
-            );
+            stateTimer =
+                setTimeout(
+                    () =>
+                        setState(
+                            "idle"
+                        ),
+                    5000
+                );
 
             break;
 
@@ -1439,19 +1354,20 @@ function setState(state) {
             );
 
 
-            stateTimer = setTimeout(
-                () => {
+            stateTimer =
+                setTimeout(
+                    () => {
 
-                    line1.textContent =
-                        "未连接";
+                        line1.textContent =
+                            "未连接";
 
-                    line1.classList.remove(
-                        "text-yellow"
-                    );
+                        line1.classList.remove(
+                            "text-yellow"
+                        );
 
-                },
-                5000
-            );
+                    },
+                    5000
+                );
 
             break;
 
@@ -1461,8 +1377,6 @@ function setState(state) {
            数据传输
         ================================================= */
 
-
-        /* 蓝牙传输 */
 
         case "bleTransfer":
 
@@ -1516,8 +1430,6 @@ function setState(state) {
             break;
 
 
-
-        /* Wi-Fi传输 */
 
         case "wifiTransfer":
 
@@ -1691,73 +1603,7 @@ function setState(state) {
 
 
 
-        /* =================================================
-           LED状态
-        ================================================= */
-
-
-        /* 方案1 · 实体LED */
-
-        case "ledRecording":
-
-            showNoDisplay();
-
-
-            if (ledArea) {
-
-                ledArea.classList.remove(
-                    "led-area-hidden"
-                );
-            }
-
-
-            led.classList.add(
-                "recording"
-            );
-
-
-            if (lcdRecordLight) {
-
-                lcdRecordLight.classList.add(
-                    "hidden"
-                );
-            }
-
-            break;
-
-
-
-        /* 方案2 · LCD红点 */
-
-        case "lcdRecordingLight":
-
-            showNoDisplay();
-
-
-            led.classList.remove(
-                "recording"
-            );
-
-
-            if (ledArea) {
-
-                ledArea.classList.add(
-                    "led-area-hidden"
-                );
-            }
-
-
-            if (lcdRecordLight) {
-
-                lcdRecordLight.classList.remove(
-                    "hidden"
-                );
-            }
-
-            break;
-
     }
-
 }
 
 
@@ -1765,46 +1611,72 @@ function setState(state) {
    右侧状态按钮
 ========================================================= */
 
-const stateButtons = document.querySelectorAll(
-    "button[data-state]"
-);
+const stateButtons =
+    document.querySelectorAll(
+        "button[data-state]"
+    );
 
 
-stateButtons.forEach(button => {
+stateButtons.forEach(
+    button => {
 
-    button.addEventListener(
-        "click",
-        () => {
+        if (button.dataset.state === "mark2") {
+            return;
+        }
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                /* 清除选中 */
+
+                stateButtons.forEach(
+                    item => {
+
+                        item.classList.remove(
+                            "active"
+                        );
+
+                    }
+                );
 
 
-            /* 清除选中 */
+                /* 当前按钮 */
 
-            stateButtons.forEach(item => {
-
-                item.classList.remove(
+                button.classList.add(
                     "active"
                 );
 
-            });
 
+                /* 切换状态 */
 
-            /* 当前按钮 */
+                setState(
+                    button.dataset.state
+                );
 
-            button.classList.add(
-                "active"
-            );
+            }
+        );
+    }
+);
 
+const marker2Button = document.querySelector(
+    'button[data-state="mark2"]'
+);
 
-            /* 切换状态 */
+if (marker2Button) {
+    marker2Button.addEventListener("click", () => {
+        console.log("marker2 clicked");
 
-            setState(
-                button.dataset.state
-            );
+        stateButtons.forEach(button => {
+            button.classList.remove("active");
+        });
+        marker2Button.classList.add("active");
 
-        }
-    );
-
-});
+        triggerMarker2();
+    });
+} else {
+    console.error('button[data-state="mark2"] not found');
+}
 
 
 /* =========================================================
