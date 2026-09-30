@@ -6504,8 +6504,9 @@ button:focus-visible {
 
 
 .lcd {
-    width: 270px;
-    height: 102px;
+    width: 270px !important;
+    height: 102px !important;
+    min-height: 102px;
     flex: 0 0 auto;
     margin: 18px 0;
     border: none !important;
@@ -6545,8 +6546,9 @@ button:focus-visible {
 @media (max-width: 620px) {
 
     .lcd {
-        width: 245px;
-        height: 94px;
+        width: 245px !important;
+        height: 94px !important;
+        min-height: 94px;
         margin: 15px 0;
     }
 
@@ -6585,17 +6587,21 @@ button:focus-visible {
     animation: none;
 }
 
-/* 标记2只作用于被选中的单根波线，保留橙黄色标记效果。 */
+/* 录音波形使用橙色，标记2的强调柱使用蓝色。 */
+#wave .record-dot:not(.marker-active) {
+    background: #ffae00 !important;
+}
+
 #wave .record-dot.marker-active {
     width: 4px !important;
     min-width: 4px !important;
     flex-basis: 4px !important;
-    background: #ffae00 !important;
+    background: #3399ff !important;
     border-radius: 2px !important;
     opacity: 1 !important;
     box-shadow:
-        0 0 4px rgba(255, 174, 0, 0.78),
-        0 0 9px rgba(255, 174, 0, 0.3);
+        0 0 4px rgba(51, 153, 255, 0.78),
+        0 0 9px rgba(51, 153, 255, 0.3);
     animation: marker2WavePulse 800ms ease-in-out infinite !important;
 }
 
@@ -6603,21 +6609,21 @@ button:focus-visible {
     0% {
         transform: scale(1, 0.8);
         filter: brightness(1);
-        box-shadow: 0 0 3px rgba(255, 174, 0, 0.55);
+        box-shadow: 0 0 3px rgba(51, 153, 255, 0.55);
     }
     50% {
         transform: scale(1.22, 1.55);
         filter: brightness(1.5);
         box-shadow:
-            0 0 7px rgba(255, 174, 0, 0.95),
-            0 0 13px rgba(255, 174, 0, 0.45);
+            0 0 7px rgba(51, 153, 255, 0.95),
+            0 0 13px rgba(51, 153, 255, 0.45);
     }
     100% {
         transform: scale(1, 0.8);
         filter: brightness(1);
         box-shadow:
-            0 0 4px rgba(255, 174, 0, 0.78),
-            0 0 9px rgba(255, 174, 0, 0.3);
+            0 0 4px rgba(51, 153, 255, 0.78),
+            0 0 9px rgba(51, 153, 255, 0.3);
     }
 }
 
@@ -6636,22 +6642,23 @@ button:focus-visible {
     left: 50%;
     z-index: 5;
     display: flex;
-    width: max-content;
+    width: calc(100% - 28px);
     height: auto;
     margin: 0;
-    padding: 0;
+    padding: 0 14px;
+    box-sizing: border-box;
     flex-direction: column;
     align-items: center;
-    gap: 6px;
+    gap: 7px;
     background: transparent;
     transform: translate(-50%, -50%);
 }
 
 .lcd.connect-page .qr-image {
     display: block;
-    width: 68px;
-    height: 68px;
-    padding: 2px;
+    width: 58px;
+    height: 58px;
+    padding: 0;
     background: #fff;
     image-rendering: pixelated;
 }
@@ -6663,4 +6670,11 @@ button:focus-visible {
     font-weight: 400;
     line-height: 13px;
     white-space: nowrap;
+}
+
+/* 仅缩小充电中与充满电页面的电池图形约三分之一。 */
+.lcd .charge-display.charging .charge-battery-large,
+.lcd .charge-display.charged .charge-battery-large {
+    transform: scale(0.67);
+    transform-origin: center;
 }
